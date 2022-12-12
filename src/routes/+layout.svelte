@@ -1,4 +1,5 @@
 <script>
+	import './app.css';
 	import { onMount } from 'svelte';
 	// temporary firebases connection
 	onMount(connectToFirebase);
@@ -6,7 +7,7 @@
 	/**
 	 * Imports firebase modules and initializes the app
 	 * Eventually will set a global store that can be referenced throughout the app
-	 * 
+	 *
 	 * **/
 	async function connectToFirebase() {
 		const appModule = await import('firebase/app');
@@ -36,13 +37,21 @@
 		//const analytics = getAnalytics(app);});
 
 		console.log(app, auth, db, storage);
-
 	}
-
 </script>
 
-<h1>The Crazy P</h1>
+<header>
+	<h1>The Crazy P</h1>
 
-<slot />
+	<button class="btn"> Button </button>
+</header>
 
-<style></style>
+
+<section>
+	<slot />
+</section>
+
+<footer />
+
+<style>
+</style>
