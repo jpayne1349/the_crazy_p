@@ -1,6 +1,11 @@
-<script>
+<script lang="ts">
 	import './app.css';
 	import { onMount } from 'svelte';
+	import InstaIcon from '../lib/InstaIcon.svelte';
+	import FbIcon from '../lib/FbIcon.svelte';
+	import Navigation from '../lib/Navigation.svelte';
+	import { firebaseStore } from './customStores.js';
+
 	// temporary firebases connection
 	onMount(connectToFirebase);
 
@@ -36,22 +41,77 @@
 		const storage = storageModule.getStorage(app);
 		//const analytics = getAnalytics(app);});
 
-		console.log(app, auth, db, storage);
+		firebaseStore.set({
+			app: app,
+			auth: auth,
+			db: db,
+			storage: storage
+		});
 	}
 </script>
 
 <header>
-	<h1>The Crazy P</h1>
-
-	<button class="btn"> Button </button>
+	<Navigation>
+		<a href="/" class="text-4xl header">THE CRAZY P</a>
+	</Navigation>
 </header>
-
 
 <section>
 	<slot />
 </section>
 
-<footer />
+<footer>
+	<div class="footer-row">
+		<a class="footer-link" href="/contact">CONTACT</a>
+		<a class="footer-link" href="/">&#169; THE CRAZY P</a>
+		<a class="footer-link" href="/faq">FAQ</a>
+	</div>
+	<div class="footer-row">
+		<a class="footer-link" href="/terms">TERMS OF SERVICE</a>
+		<a class="footer-link" href="/privacy">PRIVACY POLICY</a>
+	</div>
+	<div class="footer-row">
+		<a href="https://www.instagram.com/thecrazyp_/?hl=en"><InstaIcon /></a>
+		<a href="https://www.facebook.com/TheCrazyP/"><FbIcon /></a>
+	</div>
+</footer>
 
 <style>
+	header {
+		display: flex;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+		height: 60px;
+	}
+	a.header {
+		font-family: docktrin;
+		color: hsl(var(--b2));
+		z-index: 10;
+	}
+
+	footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		background-color: hsl(var(--a));
+
+		padding: 25px 0;
+	}
+
+	.footer-row {
+		display: flex;
+		width: 300px;
+		justify-content: space-evenly;
+		font-size: 12px;
+		padding: 5px 0;
+	}
+	.footer-link {
+		font-family: lato-light;
+		color: hsl(var(--ac));
+	}
+	@media screen and (max-width: 500px) {
+	}
 </style>

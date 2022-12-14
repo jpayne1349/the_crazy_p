@@ -33,7 +33,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@types/siema": "^1.4.8",
 		"daisyui": "^2.43.0",
-		"firebase": "^9.15.0"
+		"firebase": "^9.15.0",
+		"siema": "^1.5.1"
 	}
 }
