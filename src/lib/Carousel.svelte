@@ -139,7 +139,6 @@
 	<div bind:this={carouselElement} class="carousel-container" class:active={showCarousel}>
 		{#if sourceListPopulated}
 			{#each srcList as src}
-				{console.log(src)}
 				<img
 					class="carousel-item"
 					{src}

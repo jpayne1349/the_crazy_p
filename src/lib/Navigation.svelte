@@ -24,19 +24,27 @@
 <nav>
 	{#if mobileNavShow}
 		<div class="mobile-nav" in:fly={{ x: 100 }}>
-			<a class="nav-link text-2xl" href="/inventory">Inventory</a>
-			<a class="nav-link text-2xl" href="/customs">Custom Order</a>
-			<a class="nav-link text-2xl" href="/contact">Contact Us</a>
-			<a class="nav-link text-2xl" href="/faq">FAQ</a>
-			<a class="nav-link text-2xl" href="/about">About</a>
+			<a class="nav-link text-2xl" href="/inventory" class:homepage={$page.url.pathname === '/'}
+				>Inventory</a
+			>
+			<a class="nav-link text-2xl" href="/customs" class:homepage={$page.url.pathname === '/'}
+				>Custom Order</a
+			>
+			<a class="nav-link text-2xl" href="/contact" class:homepage={$page.url.pathname === '/'}
+				>Contact Us</a
+			>
+			<a class="nav-link text-2xl" href="/faq" class:homepage={$page.url.pathname === '/'}>FAQ</a>
+			<a class="nav-link text-2xl" href="/about" class:homepage={$page.url.pathname === '/'}
+				>About</a
+			>
 		</div>
 	{/if}
 	<div class="desktop-nav">
-		<a class="nav-link" href="/inventory">Inventory</a>
-		<a class="nav-link" href="/contact">Contact Us</a>
+		<a class="nav-link" href="/inventory" class:homepage={$page.url.pathname === '/'}>Inventory</a>
+		<a class="nav-link" href="/contact" class:homepage={$page.url.pathname === '/'}>Contact Us</a>
 		<slot />
-		<a class="nav-link" href="/faq">FAQ</a>
-		<a class="nav-link" href="/about">About</a>
+		<a class="nav-link" href="/faq" class:homepage={$page.url.pathname === '/'}>FAQ</a>
+		<a class="nav-link" href="/about" class:homepage={$page.url.pathname === '/'}>About</a>
 	</div>
 </nav>
 
@@ -63,15 +71,17 @@
 		padding-top: 13px;
 		justify-content: space-around;
 		align-items: center;
-		color: hsl(var(--b2));
 		left: 0;
 		top: 0;
 		z-index: 10;
 	}
 	.nav-link {
 		font-family: docktrin;
-		color: hsl(var(--b2));
+		color: hsl(var(--ac));
 		font-size: 24px;
+	}
+	.nav-link.homepage {
+		color: hsl(var(--b2));
 	}
 	.mobile-title {
 		display: none;

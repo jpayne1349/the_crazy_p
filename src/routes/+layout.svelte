@@ -5,6 +5,7 @@
 	import FbIcon from '../lib/FbIcon.svelte';
 	import Navigation from '../lib/Navigation.svelte';
 	import { firebaseStore } from './customStores.js';
+	import { page } from '$app/stores';
 
 	// temporary firebases connection
 	onMount(connectToFirebase);
@@ -48,11 +49,12 @@
 			storage: storage
 		});
 	}
+	console.log($page);
 </script>
 
 <header>
 	<Navigation>
-		<a href="/" class="text-4xl header">THE CRAZY P</a>
+		<a href="/" class="text-4xl header" class:homepage={$page.url.pathname === '/'}>THE CRAZY P</a>
 	</Navigation>
 </header>
 
@@ -88,10 +90,12 @@
 	}
 	a.header {
 		font-family: docktrin;
-		color: hsl(var(--b2));
+		color: hsl(var(--ac));
 		z-index: 10;
 	}
-
+	a.header.homepage {
+		color: hsl(var(--b2));
+	}
 	footer {
 		display: flex;
 		flex-direction: column;
