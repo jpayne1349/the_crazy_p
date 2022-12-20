@@ -27,10 +27,10 @@
 			<a class="nav-link text-2xl" href="/inventory" class:homepage={$page.url.pathname === '/'}
 				>Inventory</a
 			>
-			<a class="nav-link text-2xl" href="/customs" class:homepage={$page.url.pathname === '/'}
+			<a class="nav-link text-2xl" href="/custom-order" class:homepage={$page.url.pathname === '/'}
 				>Custom Order</a
 			>
-			<a class="nav-link text-2xl" href="/contact" class:homepage={$page.url.pathname === '/'}
+			<a class="nav-link text-2xl" href="/contact-us" class:homepage={$page.url.pathname === '/'}
 				>Contact Us</a
 			>
 			<a class="nav-link text-2xl" href="/faq" class:homepage={$page.url.pathname === '/'}>FAQ</a>
@@ -41,7 +41,8 @@
 	{/if}
 	<div class="desktop-nav">
 		<a class="nav-link" href="/inventory" class:homepage={$page.url.pathname === '/'}>Inventory</a>
-		<a class="nav-link" href="/contact" class:homepage={$page.url.pathname === '/'}>Contact Us</a>
+		<a class="nav-link" href="/contact" class:homepage={$page.url.pathname === '/'}>contact-us Us</a
+		>
 		<slot />
 		<a class="nav-link" href="/faq" class:homepage={$page.url.pathname === '/'}>FAQ</a>
 		<a class="nav-link" href="/about" class:homepage={$page.url.pathname === '/'}>About</a>

@@ -35,7 +35,9 @@
 			<h4 class="text" in:fly={{ y: -20, duration: 1000, delay: 0 }}>Custom Made, $500 & Under</h4>
 			<h2 class="text-3xl" in:fly={{ y: -20, duration: 1000, delay: 400 }}>Hand Burned Hats</h2>
 
-			<a class="text" href="/customs" in:fly={{ y: -20, duration: 1000, delay: 800 }}>ORDER NOW</a>
+			<a class="text" href="/custom-order" in:fly={{ y: -20, duration: 1000, delay: 800 }}
+				>ORDER NOW</a
+			>
 		</div>
 	{/if}
 </section>

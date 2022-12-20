@@ -21,6 +21,10 @@
 	src: url('../public/fonts/Lato/Lato-Light.ttf');
 }
 @font-face {
+	font-family: lato-lightitalic;
+	src: url('../public/fonts/Lato/Lato-LightItalic.ttf');
+}
+@font-face {
 	font-family: lato-thin;
 	src: url('../public/fonts/Lato/Lato-Thin.ttf');
 }
