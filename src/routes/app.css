@@ -10,6 +10,10 @@
 	font-family: lato-regular;
 	src: url('../public/fonts/Lato/Lato-Regular.ttf');
 }
+@font-face {
+	font-family: lato-italic;
+	src: url('../public/fonts/Lato/Lato-Italic.ttf');
+}
 
 @font-face {
 	font-family: lato-bold;

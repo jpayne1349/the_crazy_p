@@ -1,7 +1,11 @@
 import { writable } from 'svelte/store';
-import type { CustomFirebaseStore } from './customTypes';
+import type { CustomFirebaseStore, CrazyProduct } from './customTypes';
 
 export const firebaseStore = writable<CustomFirebaseStore>(undefined);
+
+export const inventoryStore = writable<CrazyProduct[]>(undefined);
+
+export const selectedProductStore = writable<CrazyProduct>(undefined);
 
 export async function connectToFirebase() {
 	const appModule = await import('firebase/app');

@@ -1,35 +1,28 @@
 <script lang="ts">
-	import { firebaseStore, connectToFirebase } from '../../customStores';
+	import { firebaseStore, inventoryStore } from '../../customStores';
 	import type { CrazyProduct } from '../../customTypes';
-	import { collection, getDocs } from 'firebase/firestore';
 	import { onMount } from 'svelte';
+
 	import Product from './Product.svelte';
 
 	let viewSold = false;
 	let singleCol = false;
-	// rewrite with product interface
+
 	let productList: CrazyProduct[] = [];
-	let inventoryLoading = true;
 
-	// write a lazy loading function that will be called when needing to load inventory.
+	onMount(setProductList);
 
-	async function loadInventory() {
-		const querySnapshot = await getDocs(collection($firebaseStore.db, 'inventory'));
-		querySnapshot.forEach((doc) => {
-			console.log('Inventory Product: ', doc.id, ' => ', doc.data());
-			let loadedProduct = doc.data() as CrazyProduct;
-			loadedProduct.id = doc.id;
-			productList = [...productList, loadedProduct];
-		});
-
-		inventoryLoading = false;
+	function setProductList() {
+		if (!$inventoryStore) {
+			setTimeout(setProductList, 500);
+			return;
+		}
+		productList = $inventoryStore;
 	}
-
-	onMount(loadInventory);
 </script>
 
 <svelte:head>
-	<title>Change Me</title>
+	<title>Inventory | The Crazy P</title>
 
 	<meta name="description" content="google displays this" />
 </svelte:head>
@@ -78,13 +71,6 @@
 		<Product productObject={product} />
 		<Product productObject={product} />
 	{/each}
-</div>
-
-<div class="loading-products">
-	<div />
-	<div />
-	<div />
-	<div />
 </div>
 
 <style>

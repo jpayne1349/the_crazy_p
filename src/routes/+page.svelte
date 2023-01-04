@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-	<title>The Crazy P | Custom Hats</title>
+	<title>Custom Hats | The Crazy P</title>
 
 	<!-- TODO: @owner fills out content -->
 	<meta name="description" content="google displays this" />
@@ -21,12 +21,8 @@
 
 <section>
 	<picture>
-		<source
-			srcset={smallBackgroundPhoto}
-			alt="Custom Hat as Background"
-			media="(max-width: 800px)"
-		/>
-		<source srcset={bigBackgroundPhoto} alt="Custom Hat as Background" />
+		<source srcset={smallBackgroundPhoto} media="(max-width: 800px)" />
+		<source srcset={bigBackgroundPhoto} />
 		<img class="bg-img" src={smallBackgroundPhoto} alt="background-hat" />
 	</picture>
 

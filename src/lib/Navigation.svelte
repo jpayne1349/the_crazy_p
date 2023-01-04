@@ -41,11 +41,13 @@
 	{/if}
 	<div class="desktop-nav">
 		<a class="nav-link" href="/inventory" class:homepage={$page.url.pathname === '/'}>Inventory</a>
-		<a class="nav-link" href="/contact" class:homepage={$page.url.pathname === '/'}>contact-us Us</a
-		>
+		<a class="nav-link" href="/about" class:homepage={$page.url.pathname === '/'}>About</a>
+
 		<slot />
 		<a class="nav-link" href="/faq" class:homepage={$page.url.pathname === '/'}>FAQ</a>
-		<a class="nav-link" href="/about" class:homepage={$page.url.pathname === '/'}>About</a>
+		<a class="nav-link" href="/custom-order" class:homepage={$page.url.pathname === '/'}
+			>Custom Order</a
+		>
 	</div>
 </nav>
 
@@ -80,6 +82,8 @@
 		font-family: docktrin;
 		color: hsl(var(--ac));
 		font-size: 24px;
+		width: 155px;
+		text-align: center;
 	}
 	.nav-link.homepage {
 		color: hsl(var(--b2));
@@ -101,7 +105,7 @@
 			flex-direction: column;
 			width: 100vw;
 			right: 0;
-			background-color: hsl(var(--a));
+			background-color: hsl(var(--p));
 			top: 0;
 			padding-top: 75px;
 			align-items: center;

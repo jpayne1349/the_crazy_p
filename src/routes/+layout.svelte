@@ -39,14 +39,16 @@
 		width: 100%;
 		justify-content: center;
 		align-items: center;
-		height: 62px;
-		box-shadow: 0 0px 4px hsl(var(--ac));
+		height: 60px;
+		/* box-shadow: 0 0px 4px hsl(var(--ac)); */
 	}
 	a.header {
 		font-family: docktrin;
 		color: hsl(var(--ac));
 		z-index: 10;
 		font-size: 36px;
+		width: 200px;
+		text-align: center;
 	}
 	a.header.homepage {
 		color: hsl(var(--b2));
