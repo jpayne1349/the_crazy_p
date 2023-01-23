@@ -49,7 +49,11 @@
 	}
 </script>
 
-<a class="row-wrapper" href="/cms/inventory/{product.name}" class:show={viewSold != product.status}>
+<a
+	class="row-wrapper"
+	href="/cms/product-inventory/{product.name}"
+	class:show={viewSold != product.status}
+>
 	<div class="table-row">
 		<p class="col photo">
 			{#if previewImageLoading}
