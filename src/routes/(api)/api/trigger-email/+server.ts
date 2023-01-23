@@ -34,7 +34,7 @@ const customOrderTemplateId = 'd-33e2cfac6b57463fa03e81b9e87b165f';
 // the 'to' is currently hard-coded, no customer emails will be sent for now.
 let msg: MessageObject = {
 	from: { name: 'South Texas Software', email: 'notifications@southtexas.software' },
-	to: ['notifications@southtexas.software']
+	to: ['notifications@southtexas.software', 'k.thecrazyp@gmail.com']
 	// 'k.thecrazyp@gmail.com',
 };
 
@@ -74,7 +74,6 @@ async function EmailHandler(type: string, payload: ContactFormPayload) {
 		} catch (e) {
 			console.error(e);
 		}
-
 	}
 }
 
