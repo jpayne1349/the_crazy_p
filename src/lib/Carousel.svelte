@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Siema from 'siema';
 	import { onMount } from 'svelte';
-	import { firebaseStore } from '../routes/customStores.js';
+	import { firebaseStore, carouselStore } from '../routes/customStores';
 	import { ref, listAll, getDownloadURL } from 'firebase/storage';
 	import type { FirebaseStorage } from 'firebase/storage';
+	import type { CrazyCarouselItem } from '../routes/customTypes';
 
 	// always required list of image sources
 	export let autoPlay = 4000;
@@ -18,7 +19,7 @@
 	export let startIndex = 0;
 	export let draggable = true;
 	export let multipleDrag = true;
-	export let dragDistanceRequired = 20;
+	export let dragDistanceRequired = 5;
 	export let loop = true;
 	export let rightToLeft = false;
 
@@ -32,7 +33,7 @@
 	let showCarousel = false;
 	let sourceListPopulated = false;
 	// get's filled with the urls for the firebase storage
-	let srcList: string[] = [];
+	let photoObjects: CrazyCarouselItem[] = [];
 	let windowWidth: number;
 
 	onMount(() => {
@@ -41,11 +42,33 @@
 				if (windowWidth > 800) {
 					elementsPerPage = 3;
 				}
-				getSourceList(storeData.storage);
+				getSourceListV2(storeData.storage);
 			}
 		});
 	});
 
+	// used in conjunction with the carouselStore to index the photos in a certain order.. specific to this use case
+	async function getSourceListV2(storageRef: FirebaseStorage) {
+		if (!$carouselStore) {
+			setTimeout(getSourceListV2, 200);
+			return;
+		}
+
+		let sortedArray = $carouselStore.photos.sort((a, b) => {
+			return a.index - b.index;
+		});
+		for (let photoObject of sortedArray) {
+			let fileRef = ref($firebaseStore.storage, storagePath + '/' + photoObject.filename);
+			let photoUrl = await getDownloadURL(fileRef);
+			photoObject.generatedUrl = photoUrl;
+		}
+		photoObjects = sortedArray;
+
+		sourceListPopulated = true;
+		createController();
+	}
+
+	// should work for all use cases, just does not account for indexing photos differently
 	async function getSourceList(storageRef: FirebaseStorage) {
 		let folderRef = ref(storageRef, storagePath);
 
@@ -59,7 +82,7 @@
 			tempList = [...tempList, newUrl];
 		}
 
-		srcList = [...tempList];
+		//srcList = [...tempList];
 		sourceListPopulated = true;
 
 		createController();
@@ -67,7 +90,7 @@
 
 	function createController() {
 		// this is here to prevent jumping the gun on the controller creation, the element needs to be filled with img's first.
-		if (carouselElement.children.length < srcList.length) {
+		if (carouselElement.children.length < photoObjects.length) {
 			setTimeout(createController, 200);
 			return;
 		}
@@ -129,6 +152,12 @@
 
 	function updatePositionDots() {
 		activeDot = carouselController.currentSlide;
+		activeDot = activeDot < 0 ? activeDot + 4 : activeDot;
+	}
+	//class:active={activeDot == index && photoObj.inventoryName != ''}
+
+	function linkClicked() {
+		console.log('linkClicked');
 	}
 </script>
 
@@ -138,21 +167,33 @@
 	<div class="loading-placeholder" class:active={!showCarousel} />
 	<div bind:this={carouselElement} class="carousel-container" class:active={showCarousel}>
 		{#if sourceListPopulated}
-			{#each srcList as src}
-				<img
-					class="carousel-item"
-					{src}
-					alt="Custom Hand Burned Hat"
-					on:touchstart={pauseCarousel}
-					on:mousedown={pauseCarousel}
-				/>
+			{#each photoObjects as photoObj}
+				{#if photoObj.inventoryName != ''}
+					<a class="link-container" href="/inventory/{photoObj.inventoryName}">
+						<div class="product-direct-link active">Available Now</div>
+						<img
+							class="carousel-item"
+							src={photoObj.generatedUrl}
+							alt="Custom Hand Burned Hat"
+							on:touchstart={pauseCarousel}
+							on:mousedown={pauseCarousel}
+						/>
+					</a>{:else}
+					<img
+						class="carousel-item"
+						src={photoObj.generatedUrl}
+						alt="Custom Hand Burned Hat"
+						on:touchstart={pauseCarousel}
+						on:mousedown={pauseCarousel}
+					/>
+				{/if}
 			{/each}
 		{/if}
 	</div>
 
 	{#if showPositionDots}
-		<ul class:active={showCarousel}>
-			{#each srcList as src, index}
+		<ul class="carousel-dot-container" class:active={showCarousel}>
+			{#each photoObjects as photo, index}
 				<li id={index.toString()} class:active={activeDot == index} />
 			{/each}
 		</ul>
@@ -161,12 +202,13 @@
 
 <style>
 	section {
-		margin: 100px 0;
+		margin: 50px 0;
+
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		position: relative;
-		overflow-y: hidden;
+		/* overflow-y: hidden; */
 	}
 	.carousel-container {
 		width: 75vw;
@@ -199,8 +241,27 @@
 	.loading-placeholder {
 		display: none;
 	}
+	.link-container {
+		position: relative;
+	}
+	.product-direct-link.active {
+		display: block;
+		position: absolute;
+		left: 32px;
+		top: 21px;
+		border: 1px solid hsl(var(--a));
+		padding: 0px 20px;
+		font-family: lato-bold;
+		border-radius: 5px;
+		font-size: 12px;
+		color: hsl(var(--b1));
+		background-color: hsl(var(--a));
+		z-index: 10;
+		width: 122px;
+		text-align: center;
+	}
 
-	ul {
+	.carousel-dot-container {
 		display: flex;
 		list-style-type: none;
 		justify-content: center;
@@ -208,10 +269,10 @@
 		transition: all 0.5s ease;
 		opacity: 0;
 	}
-	ul.active {
+	.carousel-dot-container.active {
 		opacity: 1;
 	}
-	ul li {
+	.carousel-dot-container li {
 		margin: 6px;
 		border-radius: 100%;
 		background-color: hsl(var(--b1));
@@ -220,7 +281,7 @@
 		width: 8px;
 		transition: all 0.2s ease;
 	}
-	ul li.active {
+	.carousel-dot-container li.active {
 		background-color: hsl(var(--b3));
 	}
 
@@ -238,17 +299,34 @@
 			display: flex;
 		}
 		.carousel-container {
-			width: 85vw;
-			height: 85vw;
+			width: 100vw;
+			height: 91vw;
+			padding-left: 5vw;
 		}
 		.carousel-item {
-			width: 85vw;
-			height: 85vw;
+			width: 90vw;
+			height: 90vw;
 			margin: 0;
 		}
 		.loading-placeholder.active {
-			width: 85vw;
-			height: 85vw;
+			width: 90vw;
+			height: 90vw;
+		}
+		.product-direct-link.active {
+			display: block;
+			position: absolute;
+			left: 4px;
+			top: 4px;
+			border: 1px solid hsl(var(--a));
+			padding: 0px 20px;
+			font-family: lato-bold;
+			border-radius: 5px;
+			font-size: 14px;
+			color: hsl(var(--b1));
+			background-color: hsl(var(--a));
+			z-index: 10;
+			width: 150px;
+			text-align: center;
 		}
 	}
 </style>

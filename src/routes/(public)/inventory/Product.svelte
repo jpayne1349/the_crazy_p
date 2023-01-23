@@ -6,13 +6,13 @@
 	import { goto } from '$app/navigation';
 
 	export let productObject: CrazyProduct;
+	export let viewSold: boolean;
 
 	let imageUrl: string = '';
 	let primaryImageLoaded: boolean = false;
 	let primaryPhotoFilename: string = '';
 
 	productObject.photos.forEach((photo) => {
-		console.log(photo);
 		if (photo.primary) {
 			primaryPhotoFilename = photo.filename;
 		}
@@ -42,6 +42,7 @@
 		goToProductPage(productObject);
 	}}
 	class="container"
+	class:show={productObject.status != viewSold}
 >
 	{#if primaryImageLoaded}
 		<img src={imageUrl} alt={productObject.name} in:fade={{ duration: 500 }} />
@@ -57,6 +58,11 @@
 <style>
 	.container {
 		position: relative;
+		display: none;
+		transition: all 0.5s;
+	}
+	.container.show {
+		display: block;
 	}
 	img {
 		position: absolute;

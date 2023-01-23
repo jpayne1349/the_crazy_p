@@ -4,7 +4,76 @@
 	import FbIcon from '../lib/FbIcon.svelte';
 	import Navigation from '../lib/Navigation.svelte';
 	import { page } from '$app/stores';
+	import type {
+		CrazyProduct,
+		CrazyCarousel,
+		CrazyCustomOrderTemplate,
+		CrazyCustomOrderForm
+	} from './customTypes';
+	import type { User } from 'firebase/auth';
+	import {
+		inventoryStore,
+		firebaseStore,
+		carouselStore,
+		customOrderTemplateStore
+	} from './customStores';
+	import { collection, getDocs } from 'firebase/firestore';
+	import { onAuthStateChanged } from 'firebase/auth';
+	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import Toast from '$lib/Toast.svelte';
+
+	onMount(() => {
+		loadTemplates();
+		loadInventory();
+	});
+
+	// set up the firebase snapshot listener..
+
+	// lazy load the inventory data once to be accessible from within app
+	async function loadInventory() {
+		const querySnapshot = await getDocs(collection($firebaseStore.db, 'inventory'));
+		let productList: CrazyProduct[] = [];
+		querySnapshot.forEach((doc) => {
+			let loadedProduct = doc.data() as CrazyProduct;
+			loadedProduct.id = doc.id;
+			productList.push(loadedProduct);
+
+			inventoryStore.set(productList);
+		});
+	}
+
+	async function loadTemplates() {
+		const contentManagementSnapshot = await getDocs(
+			collection($firebaseStore.db, 'content-management')
+		);
+		let productList: CrazyProduct[] = [];
+		contentManagementSnapshot.forEach((doc) => {
+			if (doc.id == 'carousel') {
+				let carouselTemplate = doc.data() as CrazyCarousel;
+				carouselTemplate.photos.sort((a, b) => a.index - b.index);
+				carouselStore.set(carouselTemplate);
+			}
+
+			if (doc.id == 'custom-order') {
+				let customOrderTemplate = doc.data() as CrazyCustomOrderTemplate;
+				customOrderTemplate.fields.sort((a, b) => a.index - b.index);
+				customOrderTemplateStore.set(customOrderTemplate);
+			}
+		});
+
+		// also getting customOrders here for viewing in CMS
+	}
 </script>
+
+<svelte:head>
+	<title>The Crazy P | Hand Burned Hats - One of a kind</title>
+
+	<meta
+		name="description"
+		content="Creating custom and one of a kind, hand burned pyrography art on fashionable western hats for the cowgirl, bride or everyday hat lover in you. What unique design do you want on your personalized hat today?"
+	/>
+</svelte:head>
 
 <header>
 	<Navigation>
@@ -15,7 +84,14 @@
 
 <slot />
 
+<Toast />
+
 <footer>
+	<div class="footer-row">
+		<a href="https://www.instagram.com/thecrazyp_/?hl=en"><InstaIcon /></a>
+		<a href="https://www.facebook.com/TheCrazyP/"><FbIcon /></a>
+	</div>
+	<br />
 	<div class="footer-row">
 		<a class="footer-link" href="/contact-us">CONTACT</a>
 		<a class="footer-link" href="/">&#169; THE CRAZY P</a>
@@ -23,11 +99,8 @@
 	</div>
 	<div class="footer-row">
 		<a class="footer-link" href="/terms-of-service">TERMS OF SERVICE</a>
-		<a class="footer-link" href="/privacy">PRIVACY POLICY</a>
-	</div>
-	<div class="footer-row">
-		<a href="https://www.instagram.com/thecrazyp_/?hl=en"><InstaIcon /></a>
-		<a href="https://www.facebook.com/TheCrazyP/"><FbIcon /></a>
+		<a class="footer-link" href="/cms">CMS</a>
+		<a class="footer-link" href="/privacy-policy">PRIVACY POLICY</a>
 	</div>
 </footer>
 
@@ -59,14 +132,15 @@
 		align-items: center;
 		background-color: hsl(var(--a));
 
-		padding: 25px 0;
+		padding: 25px 0 25px;
 	}
 	.underline {
-		width: 100vw;
+		width: 60vw;
+		margin-left: 20vw;
 		height: 1px;
-		/* background-color: hsl(var(--ac)); */
+		background-color: hsl(var(--n));
 		position: absolute;
-		top: 62px;
+		top: 69px;
 		left: 0;
 	}
 	.footer-row {
@@ -82,5 +156,9 @@
 	}
 
 	@media screen and (max-width: 500px) {
+		.underline {
+			width: 90vw;
+			margin-left: 5vw;
+		}
 	}
 </style>

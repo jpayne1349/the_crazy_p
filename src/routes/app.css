@@ -41,5 +41,9 @@
 	src: url('../public/fonts/Lato/Lato-BoldItalic.ttf');
 }
 
+* {
+	font-family: lato-regular;
+}
+
 @media screen and (max-width: 500px) {
 }

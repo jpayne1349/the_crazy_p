@@ -21,59 +21,58 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Inventory | The Crazy P</title>
+<div class="inventory-container">
+	<div class="sort-bar">
+		<div class="button-container">
+			<button
+				class="text selected"
+				class:selected={!viewSold}
+				on:click={() => {
+					viewSold = false;
+				}}>Available</button
+			>
+			<button
+				class="text"
+				id="sold"
+				class:selected={viewSold}
+				on:click={() => {
+					viewSold = true;
+				}}>Sold</button
+			>
+		</div>
 
-	<meta name="description" content="google displays this" />
-</svelte:head>
-
-<div class="sort-bar">
-	<div class="button-container">
-		<button
-			class="text selected"
-			class:selected={!viewSold}
-			on:click={() => {
-				viewSold = false;
-			}}>Available</button
-		>
-		<button
-			class="text"
-			id="sold"
-			class:selected={viewSold}
-			on:click={() => {
-				viewSold = true;
-			}}>Sold</button
-		>
+		<div class="button-container">
+			<button
+				id="single-col"
+				on:click={() => {
+					singleCol = true;
+				}}
+			/>
+			<button
+				id="double-col"
+				on:click={() => {
+					singleCol = false;
+				}}
+				><div />
+				<div />
+				<div />
+				<div /></button
+			>
+		</div>
 	</div>
 
-	<div class="button-container">
-		<button
-			id="single-col"
-			on:click={() => {
-				singleCol = true;
-			}}
-		/>
-		<button
-			id="double-col"
-			on:click={() => {
-				singleCol = false;
-			}}
-			><div />
-			<div />
-			<div />
-			<div /></button
-		>
+	<div class="products" class:single-col={singleCol}>
+		{#each productList as product}
+			<Product productObject={product} {viewSold} />
+		{/each}
 	</div>
-</div>
-
-<div class="products" class:single-col={singleCol}>
-	{#each productList as product}
-		<Product productObject={product} />
-		<Product productObject={product} />
-	{/each}
 </div>
 
 <style>
+	.inventory-container {
+		max-width: 900px;
+		margin: 0 auto;
+	}
 	.sort-bar {
 		display: flex;
 		justify-content: space-between;
@@ -86,11 +85,11 @@
 	/* default to the two wide display */
 	.products {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(4, 1fr);
 		gap: 10px;
 	}
 	.products.single-col {
-		grid-template-columns: 100%;
+		grid-template-columns: repeat(2, 1fr);
 		gap: 30px;
 	}
 	.button-container {
@@ -122,5 +121,15 @@
 		width: 100%;
 		height: 100%;
 		background-color: hsl(var(--ac));
+	}
+	@media screen and (max-width: 800px) {
+		.products {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 10px;
+		}
+		.products.single-col {
+			grid-template-columns: 100%;
+			gap: 30px;
+		}
 	}
 </style>
