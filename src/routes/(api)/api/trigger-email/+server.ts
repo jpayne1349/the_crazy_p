@@ -67,7 +67,6 @@ async function EmailHandler(type: string, payload: ContactFormPayload) {
 		console.error(msg);
 	} else {
 		sgMail.setApiKey(SENDGRID_ENV.apiKey);
-
 		try {
 			//@ts-ignore
 			let sgResponse = await sgMail.send(msg);
@@ -75,6 +74,7 @@ async function EmailHandler(type: string, payload: ContactFormPayload) {
 		} catch (e) {
 			console.error(e);
 		}
+
 	}
 }
 
