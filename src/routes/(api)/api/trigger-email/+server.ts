@@ -71,7 +71,6 @@ async function EmailHandler(type: string, payload: ContactFormPayload) {
 		try {
 			//@ts-ignore
 			let sgResponse = await sgMail.send(msg);
-
 			console.log(sgResponse);
 		} catch (e) {
 			console.error(e);
