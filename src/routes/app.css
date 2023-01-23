@@ -10,6 +10,10 @@
 	font-family: lato-regular;
 	src: url('../public/fonts/Lato/Lato-Regular.ttf');
 }
+@font-face {
+	font-family: lato-italic;
+	src: url('../public/fonts/Lato/Lato-Italic.ttf');
+}
 
 @font-face {
 	font-family: lato-bold;
@@ -19,6 +23,10 @@
 @font-face {
 	font-family: lato-light;
 	src: url('../public/fonts/Lato/Lato-Light.ttf');
+}
+@font-face {
+	font-family: lato-lightitalic;
+	src: url('../public/fonts/Lato/Lato-LightItalic.ttf');
 }
 @font-face {
 	font-family: lato-thin;
@@ -31,6 +39,10 @@
 @font-face {
 	font-family: lato-bolditalic;
 	src: url('../public/fonts/Lato/Lato-BoldItalic.ttf');
+}
+
+* {
+	font-family: lato-regular;
 }
 
 @media screen and (max-width: 500px) {

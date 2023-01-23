@@ -1,78 +1,106 @@
 <script lang="ts">
 	import './app.css';
-	import { onMount } from 'svelte';
 	import InstaIcon from '../lib/InstaIcon.svelte';
 	import FbIcon from '../lib/FbIcon.svelte';
 	import Navigation from '../lib/Navigation.svelte';
-	import { firebaseStore } from './customStores.js';
+	import { page } from '$app/stores';
+	import type {
+		CrazyProduct,
+		CrazyCarousel,
+		CrazyCustomOrderTemplate,
+		CrazyCustomOrderForm
+	} from './customTypes';
+	import type { User } from 'firebase/auth';
+	import {
+		inventoryStore,
+		firebaseStore,
+		carouselStore,
+		customOrderTemplateStore
+	} from './customStores';
+	import { collection, getDocs } from 'firebase/firestore';
+	import { onAuthStateChanged } from 'firebase/auth';
+	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import Toast from '$lib/Toast.svelte';
 
-	// temporary firebases connection
-	onMount(connectToFirebase);
+	onMount(() => {
+		loadTemplates();
+		loadInventory();
+	});
 
-	/**
-	 * Imports firebase modules and initializes the app
-	 * Eventually will set a global store that can be referenced throughout the app
-	 *
-	 * **/
-	async function connectToFirebase() {
-		const appModule = await import('firebase/app');
-		const firestoreModule = await import('firebase/firestore');
-		const storageModule = await import('firebase/storage');
-		const authModule = await import('firebase/auth');
-		const analyticsModule = await import('firebase/analytics');
+	// set up the firebase snapshot listener..
 
-		// TODO: firestore, storage, etc need to be added
+	// lazy load the inventory data once to be accessible from within app
+	async function loadInventory() {
+		const querySnapshot = await getDocs(collection($firebaseStore.db, 'inventory'));
+		let productList: CrazyProduct[] = [];
+		querySnapshot.forEach((doc) => {
+			let loadedProduct = doc.data() as CrazyProduct;
+			loadedProduct.id = doc.id;
+			productList.push(loadedProduct);
 
-		// ** PUBLIC VARIABLES **
-		const firebaseConfig = {
-			apiKey: 'AIzaSyD8hzVsjGmzIGxUKk-Rrv1pQ0w6i9M95Ps',
-			authDomain: 'thecrazyp-3709c.firebaseapp.com',
-			projectId: 'thecrazyp-3709c',
-			storageBucket: 'thecrazyp-3709c.appspot.com',
-			messagingSenderId: '488243290640',
-			appId: '1:488243290640:web:002eb6d3c79c3f1e312095',
-			measurementId: 'G-907CL0X3CB'
-		};
-
-		// Initialize Firebase
-		const app = appModule.initializeApp(firebaseConfig, 'TheCrazyP');
-		const auth = authModule.getAuth(app);
-		const db = firestoreModule.getFirestore(app);
-		const storage = storageModule.getStorage(app);
-		//const analytics = getAnalytics(app);});
-
-		firebaseStore.set({
-			app: app,
-			auth: auth,
-			db: db,
-			storage: storage
+			inventoryStore.set(productList);
 		});
+	}
+
+	async function loadTemplates() {
+		const contentManagementSnapshot = await getDocs(
+			collection($firebaseStore.db, 'content-management')
+		);
+		let productList: CrazyProduct[] = [];
+		contentManagementSnapshot.forEach((doc) => {
+			if (doc.id == 'carousel') {
+				let carouselTemplate = doc.data() as CrazyCarousel;
+				carouselTemplate.photos.sort((a, b) => a.index - b.index);
+				carouselStore.set(carouselTemplate);
+			}
+
+			if (doc.id == 'custom-order') {
+				let customOrderTemplate = doc.data() as CrazyCustomOrderTemplate;
+				customOrderTemplate.fields.sort((a, b) => a.index - b.index);
+				customOrderTemplateStore.set(customOrderTemplate);
+			}
+		});
+
+		// also getting customOrders here for viewing in CMS
 	}
 </script>
 
+<svelte:head>
+	<title>The Crazy P | Hand Burned Hats - One of a kind</title>
+
+	<meta
+		name="description"
+		content="Creating custom and one of a kind, hand burned pyrography art on fashionable western hats for the cowgirl, bride or everyday hat lover in you. What unique design do you want on your personalized hat today?"
+	/>
+</svelte:head>
+
 <header>
 	<Navigation>
-		<a href="/" class="text-4xl header">THE CRAZY P</a>
+		<a href="/" class="header" class:homepage={$page.url.pathname === '/'}>THE CRAZY P</a>
 	</Navigation>
 </header>
+<div class="underline" />
 
-<section>
-	<slot />
-</section>
+<slot />
+
+<Toast />
 
 <footer>
 	<div class="footer-row">
-		<a class="footer-link" href="/contact">CONTACT</a>
+		<a href="https://www.instagram.com/thecrazyp_/?hl=en"><InstaIcon /></a>
+		<a href="https://www.facebook.com/TheCrazyP/"><FbIcon /></a>
+	</div>
+	<br />
+	<div class="footer-row">
+		<a class="footer-link" href="/contact-us">CONTACT</a>
 		<a class="footer-link" href="/">&#169; THE CRAZY P</a>
 		<a class="footer-link" href="/faq">FAQ</a>
 	</div>
 	<div class="footer-row">
-		<a class="footer-link" href="/terms">TERMS OF SERVICE</a>
-		<a class="footer-link" href="/privacy">PRIVACY POLICY</a>
-	</div>
-	<div class="footer-row">
-		<a href="https://www.instagram.com/thecrazyp_/?hl=en"><InstaIcon /></a>
-		<a href="https://www.facebook.com/TheCrazyP/"><FbIcon /></a>
+		<a class="footer-link" href="/terms-of-service">TERMS OF SERVICE</a>
+		<a class="footer-link" href="/cms">CMS</a>
+		<a class="footer-link" href="/privacy-policy">PRIVACY POLICY</a>
 	</div>
 </footer>
 
@@ -85,22 +113,36 @@
 		justify-content: center;
 		align-items: center;
 		height: 60px;
+		/* box-shadow: 0 0px 4px hsl(var(--ac)); */
 	}
 	a.header {
 		font-family: docktrin;
-		color: hsl(var(--b2));
+		color: hsl(var(--ac));
 		z-index: 10;
+		font-size: 36px;
+		width: 200px;
+		text-align: center;
 	}
-
+	a.header.homepage {
+		color: hsl(var(--b2));
+	}
 	footer {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		background-color: hsl(var(--a));
 
-		padding: 25px 0;
+		padding: 25px 0 25px;
 	}
-
+	.underline {
+		width: 60vw;
+		margin-left: 20vw;
+		height: 1px;
+		background-color: hsl(var(--n));
+		position: absolute;
+		top: 69px;
+		left: 0;
+	}
 	.footer-row {
 		display: flex;
 		width: 300px;
@@ -112,6 +154,11 @@
 		font-family: lato-light;
 		color: hsl(var(--ac));
 	}
+
 	@media screen and (max-width: 500px) {
+		.underline {
+			width: 90vw;
+			margin-left: 5vw;
+		}
 	}
 </style>
