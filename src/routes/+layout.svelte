@@ -37,7 +37,12 @@
 		querySnapshot.forEach((doc) => {
 			let loadedProduct = doc.data() as CrazyProduct;
 			loadedProduct.id = doc.id;
+			console.log(loadedProduct);
 			productList.push(loadedProduct);
+
+			productList.sort((a, b) => {
+				return b.updated.seconds - a.updated.seconds;
+			});
 
 			inventoryStore.set(productList);
 		});

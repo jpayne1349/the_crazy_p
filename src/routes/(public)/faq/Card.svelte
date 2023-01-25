@@ -28,10 +28,11 @@
 		overflow: hidden;
 		height: 250px;
 		background-position: center;
-		background-size: 100%;
 		border-top-left-radius: 5px;
 		border-top-right-radius: 5px;
 		background-color: hsl(var(--n));
+		background-repeat: no-repeat;
+		background-size: cover;
 	}
 	.content {
 		display: flex;

@@ -250,7 +250,7 @@
 			});
 			savingProductData = false;
 
-			await goto('/cms/inventory');
+			await goto('/cms/product-inventory');
 		} catch (e) {
 			console.log(e);
 			alertStore.set({
@@ -293,7 +293,7 @@
 					message: 'Success! Product deleted.'
 				});
 
-				await goto('/cms/inventory');
+				await goto('/cms/product-inventory');
 			} catch (e) {
 				console.log(e);
 				alertStore.set({
