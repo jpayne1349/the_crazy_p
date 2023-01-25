@@ -54,7 +54,7 @@
 
 			$inventoryStore = [...$inventoryStore, blankProduct];
 
-			await goto('/cms/inventory/' + blankProduct.name);
+			await goto('/cms/product-inventory/' + blankProduct.name);
 		} catch (e) {
 			alertStore.set({
 				show: true,
