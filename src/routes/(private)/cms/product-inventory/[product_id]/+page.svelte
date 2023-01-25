@@ -80,12 +80,15 @@
 				photo.primary = false;
 			}
 		}
+		let updatedTimestamp = Timestamp.now();
+		data.updated = updatedTimestamp;
 		data.photos = data.photos;
 
 		try {
 			let docRef = doc($firebaseStore.db, 'inventory', data.id);
 			let update = await updateDoc(docRef, {
-				photos: data.photos
+				photos: data.photos,
+				updated: updatedTimestamp
 			});
 		} catch (e) {
 			console.log(e);
@@ -122,10 +125,14 @@
 					index: ''
 				});
 
+				let updatedTimestamp = Timestamp.now();
+
 				let docRef = doc($firebaseStore.db, 'inventory', data.id);
 				let update = await updateDoc(docRef, {
-					photos: data.photos
+					photos: data.photos,
+					updated: updatedTimestamp
 				});
+				data.updated = updatedTimestamp;
 
 				photoSrcListPopulated = false;
 
@@ -226,13 +233,16 @@
 			data.description = description == null ? '' : description.toString();
 			data.status = status == null ? false : true;
 
+			let updatedTimestamp = Timestamp.now();
+			data.updated = updatedTimestamp;
+
 			let docRef = doc($firebaseStore.db, 'inventory', data.id);
 			let update = await updateDoc(docRef, {
 				name: data.name,
 				price: data.price,
 				description: data.description,
 				status: data.status,
-				updated: Timestamp.now()
+				updated: updatedTimestamp
 			});
 
 			for (let n = 0; n < $inventoryStore.length; n++) {
