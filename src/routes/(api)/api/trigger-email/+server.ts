@@ -61,7 +61,7 @@ async function EmailHandler(type: string, payload: { [key: string]: string }) {
 			};
 			break;
 		case 'error':
-			msg.templateId = customOrderTemplateId;
+			msg.templateId = errorTemplateId;
 			msg.dynamicTemplateData = {
 				details: payload.details,
 				code: payload.code,
