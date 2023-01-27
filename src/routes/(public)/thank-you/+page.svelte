@@ -1,11 +1,21 @@
 <script>
+	import thankYouPhoto from '$lib/assets/thankYou.jpg';
 </script>
 
+<!-- TODO: This needs to be interpreted, based on if this is completed custom order or the return of an actual purchase. -->
 <p class="message">Your order has been sent! We will reach out soon.</p>
 
-<a href="/inventory">Inventory Hats</a>
+<div class="image-container">
+	<picture>
+		<source srcset={thankYouPhoto} />
+		<img class="bg-img" src={thankYouPhoto} alt="Thanks again!" />
+	</picture>
+</div>
 
-<a href="/faq">New Custom Order</a>
+<p class="message">
+	Continue browsing the <a href="/inventory">inventory</a> or submit a new
+	<a href="/faq">custom order</a>.
+</p>
 
 <style>
 	.message {
@@ -15,11 +25,29 @@
 		margin-top: 50px;
 	}
 	a {
-		text-decoration: underline;
-		font-family: lato-italic;
-		font-size: 16px;
-		display: block;
-		text-align: center;
+		color: hsl(var(--p));
+		font-family: lato-regular;
+		font-size: 20px;
+	}
+	.image-container {
+		display: flex;
+		justify-content: center;
 		margin-top: 50px;
+	}
+	img {
+		max-width: 300px;
+		border-radius: 15px;
+		box-shadow: 0px 1px 4px grey;
+	}
+	@media screen and (max-width: 800px) {
+		.message {
+			margin-top: 25px;
+		}
+		.image-container {
+			margin-top: 15px;
+		}
+		img {
+			max-width: 200px;
+		}
 	}
 </style>

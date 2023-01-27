@@ -30,6 +30,7 @@ export const POST = (async ({ request }) => {
 
 const contactFormTemplateId = 'd-b1553af4379141c28b7a6543bc8d195a';
 const customOrderTemplateId = 'd-33e2cfac6b57463fa03e81b9e87b165f';
+const errorTemplateId = 'd-41c60c4f4df14b0cae277be75e45cf27';
 
 // the 'to' is currently hard-coded, no customer emails will be sent for now.
 let msg: MessageObject = {
@@ -38,7 +39,7 @@ let msg: MessageObject = {
 	// 'k.thecrazyp@gmail.com',
 };
 
-async function EmailHandler(type: string, payload: ContactFormPayload) {
+async function EmailHandler(type: string, payload: { [key: string]: string }) {
 	//build 'msg' object based on the type and payload details
 	switch (type) {
 		case 'contact':
@@ -59,10 +60,19 @@ async function EmailHandler(type: string, payload: ContactFormPayload) {
 				email: payload.email
 			};
 			break;
+		case 'error':
+			msg.templateId = customOrderTemplateId;
+			msg.dynamicTemplateData = {
+				details: payload.details,
+				code: payload.code,
+				message: payload.message,
+				pathname: payload.pathname
+			};
+			break;
 	}
 
 	// d: change to dev if testing other features
-	if (false) {
+	if (dev) {
 		console.log('****************** SIMULATING EMAIL PAYLOAD *********************');
 		console.error(msg);
 	} else {

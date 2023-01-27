@@ -51,8 +51,9 @@
 	<div class="image-placeholder active" />
 
 	<p class="name">{productObject.name}</p>
-
-	<p class="price">${productObject.price}.00</p>
+	{#if productObject.status}
+		<p class="price">${productObject.price}.00</p>
+	{/if}
 </button>
 
 <style>

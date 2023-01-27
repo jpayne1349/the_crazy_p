@@ -3,6 +3,7 @@
 	import { fly } from 'svelte/transition';
 	import smallBackgroundPhoto from '$lib/assets/smallBg.jpg';
 	import bigBackgroundPhoto from '$lib/assets/bigBg.jpg';
+	import bigBackgroundPhoto2 from '$lib/assets/bigHomeBg2.jpeg';
 	import Carousel from '../lib/Carousel.svelte';
 	import { alertStore } from './customStores';
 
@@ -16,7 +17,7 @@
 <section>
 	<picture>
 		<source srcset={smallBackgroundPhoto} media="(max-width: 800px)" />
-		<source srcset={bigBackgroundPhoto} />
+		<source srcset={bigBackgroundPhoto2} />
 		<img class="bg-img" src={smallBackgroundPhoto} alt="background-hat" />
 	</picture>
 
@@ -50,7 +51,7 @@
 	.bg-img {
 		width: 100%;
 		z-index: 1;
-		filter: brightness(0.7);
+		/* filter: brightness(0.6); */
 		pointer-events: none;
 	}
 
