@@ -1,6 +1,7 @@
 <script lang="ts">
 	import smallCustomOrder from '$lib/assets/smallCustomOrder.jpeg';
 	import bigCustomOrder from '$lib/assets/bigCustomOrder.jpg';
+	import bigCustomOrder2 from '$lib/assets/bigCustomOrder2.jpeg';
 	import CustomOrderForm from './CustomOrderForm.svelte';
 	import CustomsClosed from './CustomsClosed.svelte';
 	import { customOrderTemplateStore, customOrderForm } from '../../customStores';
@@ -34,7 +35,7 @@
 
 <picture>
 	<source srcset={smallCustomOrder} media="(max-width: 800px)" />
-	<source srcset={bigCustomOrder} />
+	<source srcset={bigCustomOrder2} />
 	<img class="bg-img" src={smallCustomOrder} alt="background-hat" />
 </picture>
 
@@ -68,6 +69,7 @@
 	}
 	img {
 		width: 100vw;
+		filter: brightness(0.8);
 	}
 	.overlay-text {
 		color: white;
@@ -102,7 +104,17 @@
 			height: auto;
 		}
 		.overlay-text {
-			margin-bottom: 350px;
+			margin-bottom: 99vw;
+		}
+	}
+	@media screen and (max-width: 700px) {
+		.overlay-text {
+			margin-bottom: 92vw;
+		}
+	}
+	@media screen and (max-width: 500px) {
+		.overlay-text {
+			margin-bottom: 78vw;
 		}
 	}
 	@keyframes spinning {

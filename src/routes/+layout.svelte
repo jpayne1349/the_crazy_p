@@ -37,7 +37,6 @@
 		querySnapshot.forEach((doc) => {
 			let loadedProduct = doc.data() as CrazyProduct;
 			loadedProduct.id = doc.id;
-			console.log(loadedProduct);
 			productList.push(loadedProduct);
 
 			productList.sort((a, b) => {
