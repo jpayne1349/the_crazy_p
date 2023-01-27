@@ -6,8 +6,6 @@
 	let sent = false;
 	let formElem: HTMLFormElement | undefined;
 
-	console.log($page);
-
 	async function sendErrorReport() {
 		if (sending) return;
 		sending = true;

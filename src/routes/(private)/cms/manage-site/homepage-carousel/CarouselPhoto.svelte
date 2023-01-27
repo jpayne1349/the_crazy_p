@@ -81,10 +81,12 @@
 			<select class="select" on:change={updateLinkedProduct}>
 				<option>None</option>
 				{#each $inventoryStore as product (product.name)}
-					{#if product.name == photo.inventoryName}
-						<option selected>{product.name}</option>
-					{:else}
-						<option>{product.name}</option>
+					{#if product.status}
+						{#if product.name == photo.inventoryName}
+							<option selected>{product.name}</option>
+						{:else}
+							<option>{product.name}</option>
+						{/if}
 					{/if}
 				{/each}
 			</select>
