@@ -130,9 +130,7 @@
 		{#if $page.error?.message == 'Not Found'}
 			<p>The page you are looking for was not found.</p>
 		{:else}
-			<p>
-				Something went wrong on our end. Sorry! Click below to send an error report if you'd like.
-			</p>
+			<p>Something went wrong on our end. Sorry!</p>
 		{/if}
 		<form on:submit|preventDefault={sendErrorReport} bind:this={formElem}>
 			<textarea id="details" placeholder="Anything to add? (optional)" />
