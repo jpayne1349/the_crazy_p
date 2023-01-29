@@ -97,7 +97,7 @@
 				});
 				generatingLink = false;
 			}
-
+			generatingLink = false;
 			await goto(response.paymentLink.url);
 		} catch (err) {
 			console.log(err);
@@ -166,6 +166,7 @@
 			{#if data.status}
 				<button class="buy-now" on:click={goToPayment}>
 					{#if generatingLink}
+						<p>LOADING... &nbsp;&nbsp;</p>
 						<div class="button-spinner" />
 					{:else}
 						<p>BUY NOW &nbsp;&#183;&nbsp;</p>

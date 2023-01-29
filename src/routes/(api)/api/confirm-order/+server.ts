@@ -25,8 +25,8 @@ export const POST = (async ({ request }) => {
 
 async function getOrderInformation(orderId: string) {
 	const client = new Client({
-		environment: Environment.Sandbox,
-		accessToken: SQUARE_ENV.sandboxToken
+		environment: Environment.Production,
+		accessToken: SQUARE_ENV.productionToken
 	});
 	try {
 		//@ts-ignore
