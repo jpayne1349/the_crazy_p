@@ -43,7 +43,7 @@ async function generatePaymentLink(name: string, price: string): Promise<Payment
 					googlePay: true
 				},
 				askForShippingAddress: true,
-				redirectUrl: 'http://192.168.1.25:5173/inventory/' + name + '/'
+				redirectUrl: 'https://the-crazy-p.vercel.app/inventory/' + name + '/'
 			}
 		});
 
