@@ -15,6 +15,7 @@
 		if (formElem) {
 			addedDetails = formData.get('details');
 		}
+
 		addedDetails = addedDetails == null ? 'None Added' : addedDetails;
 
 		let errorObject = {
@@ -131,7 +132,7 @@
 			<p>Something went wrong on our end. Sorry!</p>
 		{/if}
 		<form on:submit|preventDefault={sendErrorReport} bind:this={formElem}>
-			<textarea id="details" placeholder="Anything to add? (optional)" />
+			<textarea id="details" name="details" placeholder="Anything to add? (optional)" />
 			<button type="submit" class="btn btn-accent"
 				>{#if sending}
 					<div class="button-spinner" />

@@ -107,8 +107,8 @@
 	@media screen and (max-width: 800px) {
 		.breadcrumbs {
 			padding: 5px 0;
-			width: 100vw;
-			margin-left: 10px;
+			width: 93vw;
+			margin-left: 0 auto;
 		}
 		section {
 			width: 100vw;

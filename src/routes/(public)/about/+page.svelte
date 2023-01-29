@@ -1,5 +1,5 @@
 <script>
-	import about from '$lib/assets/about.jpg';
+	import about from '$lib/assets/about.jpeg';
 </script>
 
 <p class="message">
@@ -19,8 +19,8 @@
 		font-size: 18px;
 	}
 	.background-photo {
-		width: 900px;
-		height: 900px;
+		width: 857px;
+		height: 490px;
 		background-position: center;
 		background-size: cover;
 		background-repeat: no-repeat;

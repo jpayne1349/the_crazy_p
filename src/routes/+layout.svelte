@@ -17,10 +17,8 @@
 		carouselStore,
 		customOrderTemplateStore
 	} from './customStores';
-	import { collection, getDocs } from 'firebase/firestore';
-	import { onAuthStateChanged } from 'firebase/auth';
+	import { collection, getDocs, query, where, onSnapshot } from 'firebase/firestore';
 	import { onMount } from 'svelte';
-	import { get } from 'svelte/store';
 	import Toast from '$lib/Toast.svelte';
 
 	onMount(() => {
@@ -32,18 +30,22 @@
 
 	// lazy load the inventory data once to be accessible from within app
 	async function loadInventory() {
-		const querySnapshot = await getDocs(collection($firebaseStore.db, 'inventory'));
-		let productList: CrazyProduct[] = [];
-		querySnapshot.forEach((doc) => {
-			let loadedProduct = doc.data() as CrazyProduct;
-			loadedProduct.id = doc.id;
-			productList.push(loadedProduct);
+		const q = query(collection($firebaseStore.db, 'inventory'));
+		//const querySnapshot = await getDocs(collection($firebaseStore.db, 'inventory'));
 
-			productList.sort((a, b) => {
-				return b.updated.seconds - a.updated.seconds;
+		const unsubscribe = onSnapshot(q, (querySnapshot) => {
+			let productList: CrazyProduct[] = [];
+			querySnapshot.forEach((doc) => {
+				let loadedProduct = doc.data() as CrazyProduct;
+				loadedProduct.id = doc.id;
+				productList.push(loadedProduct);
+
+				productList.sort((a, b) => {
+					return b.updated.seconds - a.updated.seconds;
+				});
+
+				inventoryStore.set(productList);
 			});
-
-			inventoryStore.set(productList);
 		});
 	}
 
@@ -163,6 +165,9 @@
 		.underline {
 			width: 90vw;
 			margin-left: 5vw;
+		}
+		a.header.homepage {
+			color: hsl(var(--b2));
 		}
 	}
 </style>

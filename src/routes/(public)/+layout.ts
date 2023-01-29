@@ -18,6 +18,11 @@ export const load = (({ url }) => {
 		];
 	});
 
+	// removal of the order_id from the crumbs list?
+	if (crumbs.length > 2) {
+		crumbs.pop();
+	}
+
 	crumbs[crumbs.length - 1].path = url.pathname;
 
 	return { title, crumbs };

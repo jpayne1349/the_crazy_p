@@ -2,8 +2,7 @@
 	import thankYouPhoto from '$lib/assets/thankYou.jpg';
 </script>
 
-<!-- TODO: This needs to be interpreted, based on if this is completed custom order or the return of an actual purchase. -->
-<p class="message">Your order has been sent! We will reach out soon.</p>
+<p class="message">Your order has been submitted! We will reach out soon.</p>
 
 <div class="image-container">
 	<picture>
@@ -14,7 +13,7 @@
 
 <p class="message">
 	Continue browsing the <a href="/inventory">inventory</a> or submit a new
-	<a href="/faq">custom order</a>.
+	<a href="/custom-order">custom order</a>.
 </p>
 
 <style>

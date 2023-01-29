@@ -19,6 +19,8 @@
 		}
 		productList = $inventoryStore;
 	}
+
+	inventoryStore.subscribe(setProductList);
 </script>
 
 <div class="inventory-container">
