@@ -19,6 +19,10 @@
 
 	// take in order_id from page params and send to api endpoint for details
 	async function confirmOrder() {
+		if (!$inventoryStore) {
+			setTimeout(confirmOrder, 250);
+			return;
+		}
 		if ($page.params.order_id) {
 			let serverRequest = await fetch('/api/confirm-order', {
 				method: 'POST',
