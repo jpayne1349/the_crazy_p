@@ -54,16 +54,11 @@
 
 			let productName = orderObject.lineItems[0].name;
 
-			inventoryStore.update((storeData) => {
-				for (let item of storeData) {
-					if (item.name == productName) {
-						updateFirestore(item.id, item.price);
-						// post to our database and update the product
-						item.status = false;
-					}
+			for (let item of $inventoryStore) {
+				if (item.name == productName) {
+					await updateFirestore(item.id, item.price);
 				}
-				return storeData;
-			});
+			}
 
 			confirmed = true;
 			loading = false;
