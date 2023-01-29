@@ -39,6 +39,7 @@
 		"daisyui": "^2.43.0",
 		"firebase": "^9.15.0",
 		"siema": "^1.5.1",
-		"sortablejs": "^1.15.0"
+		"sortablejs": "^1.15.0",
+		"square": "^25.1.0"
 	}
 }

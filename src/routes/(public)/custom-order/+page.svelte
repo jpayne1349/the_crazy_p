@@ -2,6 +2,7 @@
 	import smallCustomOrder from '$lib/assets/smallCustomOrder.jpeg';
 	import bigCustomOrder from '$lib/assets/bigCustomOrder.jpg';
 	import bigCustomOrder2 from '$lib/assets/bigCustomOrder2.jpeg';
+	import bigCustomOrder3 from '$lib/assets/bigCustomOrder3.jpeg';
 	import CustomOrderForm from './CustomOrderForm.svelte';
 	import CustomsClosed from './CustomsClosed.svelte';
 	import { customOrderTemplateStore, customOrderForm } from '../../customStores';
@@ -35,7 +36,7 @@
 
 <picture>
 	<source srcset={smallCustomOrder} media="(max-width: 800px)" />
-	<source srcset={bigCustomOrder2} />
+	<source srcset={bigCustomOrder3} />
 	<img class="bg-img" src={smallCustomOrder} alt="background-hat" />
 </picture>
 

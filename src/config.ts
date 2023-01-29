@@ -23,3 +23,10 @@ export const firebaseClientConfig = {
 	//@ts-ignore
 	measurementId: p.VITE_FIREBASE_CLIENT_MEASUREMENTID
 };
+
+export const SQUARE_ENV = {
+	//@ts-ignore
+	sandboxToken: p.VITE_SQUARE_SANDBOX_TOKEN,
+	//@ts-ignore
+	productionToken: p.VITE_SQUARE_PROD_TOKEN
+};

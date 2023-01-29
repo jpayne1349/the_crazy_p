@@ -76,7 +76,7 @@
 			}
 
 			// redirect to a thank you page..
-			await goto('/thank-you');
+			await goto('/custom-order/thank-you');
 		}
 	}
 
@@ -233,7 +233,7 @@
 	.form-container {
 		font-family: lato-regular;
 		font-size: 18px;
-		max-width: 900px;
+		max-width: 700px;
 		margin: 0 auto 100px;
 	}
 	.form-preface-message {

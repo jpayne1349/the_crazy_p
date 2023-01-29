@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
+	export let mobileNavShow: boolean;
 </script>
 
 <svg
@@ -7,6 +8,7 @@
 	version="1.1"
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
+	class:showing={mobileNavShow}
 >
 	<title>Menu Icon</title>
 	<g id="Landing-Page-v2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -34,6 +36,10 @@
 	svg {
 		width: 32px;
 		height: 32px;
+		transition: all 0.3s;
+	}
+	svg.showing {
+		transform: rotate(-25deg);
 	}
 	#icon-container.homepage {
 		stroke: hsl(var(--b2));

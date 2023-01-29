@@ -19,7 +19,7 @@
 	class="nav-button"
 	on:click={() => {
 		mobileNavShow = !mobileNavShow;
-	}}><MenuIcon /></button
+	}}><MenuIcon {mobileNavShow} /></button
 >
 <nav>
 	{#if mobileNavShow}
@@ -105,7 +105,7 @@
 			flex-direction: column;
 			width: 100vw;
 			right: 0;
-			background-color: hsl(var(--p));
+			background-color: hsl(var(--a));
 			top: 0;
 			padding-top: 75px;
 			align-items: center;
@@ -117,6 +117,9 @@
 			width: 100%;
 			text-align: center;
 			padding: 10px;
+		}
+		.nav-link.homepage {
+			color: hsl(var(--ac));
 		}
 		.mobile-title {
 			display: flex;
