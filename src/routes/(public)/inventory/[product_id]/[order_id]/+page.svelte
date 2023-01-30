@@ -60,7 +60,16 @@
 
 			for (let item of $inventoryStore) {
 				if (item.name == productName) {
-					await updateFirestore(item.id, item.price);
+					let docRef = doc($firebaseStore.db, 'inventory', item.id);
+
+					let updatedDoc = await updateDoc(docRef, {
+						status: false,
+						'sold.price': item.price,
+						'sold.to': orderData.email,
+						'sold.reference': orderData.id,
+						'sold.timestamp': Timestamp.now(),
+						updated: Timestamp.now()
+					});
 				}
 			}
 
@@ -68,23 +77,12 @@
 			loading = false;
 		}
 	}
-
-	async function updateFirestore(itemId: string, itemPrice: string) {
-		let docRef = doc($firebaseStore.db, 'inventory', itemId);
-		let update = await updateDoc(docRef, {
-			status: false,
-			'sold.price': itemPrice,
-			'sold.to': orderData.email,
-			'sold.reference': orderData.id,
-			'sold.timestamp': Timestamp.now(),
-			updated: Timestamp.now()
-		});
-	}
 </script>
 
 <div class="bar" />
 <div class="container">
 	<h3>ORDER CONFIRMATION</h3>
+	{messageToDisplay}
 	<p class="order-id">
 		ID:
 		{#if loading}

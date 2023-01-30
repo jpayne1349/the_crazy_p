@@ -71,7 +71,7 @@
 		});
 	}
 
-	async function updateTemplateIndexes(evt: SortableEvent) {
+	async function updateTemplateIndexes() {
 		let movedFields = sortableContainer.children;
 		for (let n = 0; n < sortableContainer.children.length; n++) {
 			let element = sortableContainer.children[n];
@@ -84,11 +84,13 @@
 					break;
 				}
 			}
+
 			let positionElement = element.getElementsByClassName('position');
 			positionElement[0].textContent = n.toString();
 
 			$updateTracker.templateUpdated = true;
 		}
+		saveToFirebase();
 	}
 
 	async function saveToFirebase() {
@@ -139,7 +141,7 @@
 {:else}
 	<div class="sortable-container" bind:this={sortableContainer}>
 		{#each $customOrderTemplateStore.fields as field}
-			<Field fieldObject={field} {updateTracker} />
+			<Field fieldObject={field} {updateTracker} on:delete={updateTemplateIndexes} />
 		{/each}
 	</div>
 {/if}

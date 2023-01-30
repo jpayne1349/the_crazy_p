@@ -4,11 +4,14 @@
 	import DragHandle from '$lib/DragHandle.svelte';
 	import type { Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
+	import { createEventDispatcher } from 'svelte';
 
 	let editMode = false;
 	let deleteRequested = false;
 	let fakeVariable = false;
 	let fieldWrapper: HTMLElement;
+
+	let dispatch = createEventDispatcher();
 
 	export let fieldObject: CustomOrderField;
 	export let updateTracker: Writable<{
@@ -31,7 +34,7 @@
 		// saving edits..
 		// gather all inputs and update fieldObject here
 		let inputs = fieldWrapper.getElementsByTagName('input');
-		console.log(inputs);
+
 		let newOptions: { name: string; selected: boolean }[] = [];
 		for (let input of inputs) {
 			if (input.value === '') {
@@ -83,6 +86,7 @@
 				});
 				deleteRequested = false;
 				$updateTracker.templateUpdated = true;
+				dispatch('delete', 'requested');
 			}
 		}
 	}
