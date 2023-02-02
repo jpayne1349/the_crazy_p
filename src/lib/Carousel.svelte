@@ -231,7 +231,7 @@
 		animation-name: shimmer;
 		animation-timing-function: linear;
 		background: hsl(var(--b3));
-		background: linear-gradient(to right, #f6f6f6 8%, #f0f0f0 18%, #f6f6f6 33%);
+		background: linear-gradient(to right, #f6f6f6 8%, #eaeaea 18%, #f6f6f6 33%);
 		background-size: 1200px 100%;
 		width: 70vw;
 		height: 20vw;

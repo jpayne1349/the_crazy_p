@@ -63,7 +63,8 @@
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 25px;
-		margin: 25px 200px;
+
+		margin: 25px 0;
 	}
 	a {
 		color: hsl(var(--a));

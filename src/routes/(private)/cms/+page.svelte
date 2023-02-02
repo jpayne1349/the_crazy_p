@@ -3,31 +3,40 @@
 </script>
 
 <div class="button-container">
-	<a href="/cms/custom-orders">
-		Custom Orders
-		<Arrow />
-	</a>
-	<a href="/cms/product-inventory">
-		Product Inventory
-		<Arrow />
-	</a>
-	<a href="/cms/contact-requests">
-		Contact Requests
-		<Arrow />
-	</a>
-	<a href="/cms/manage-site"
-		>Manage Site
-		<Arrow />
-	</a>
+	<div class="row">
+		<a href="/cms/custom-orders">
+			Custom Orders
+			<Arrow />
+		</a>
+		<a href="/cms/product-inventory">
+			Product Inventory
+			<Arrow />
+		</a>
+	</div>
+	<div class="row">
+		<a href="/cms/contact-requests">
+			Contact Requests
+			<Arrow />
+		</a>
+		<a href="/cms/manage-site"
+			>Manage Site
+			<Arrow />
+		</a>
+	</div>
 </div>
 
 <style>
 	.button-container {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 25px;
-		margin-top: 25px;
-		padding: 0 50px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.row {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		margin-bottom: 25px;
 	}
 	a {
 		font-family: lato-regular;
@@ -37,19 +46,21 @@
 		justify-content: space-evenly;
 		align-items: center;
 		text-align: center;
-		height: 33vh;
-		padding: 40px 0px;
+		height: 225px;
+		width: 250px;
+		margin-left: 25px;
 		border: solid 1px hsl(var(--n));
 		border-radius: 2px;
 	}
 
 	@media screen and (max-width: 800px) {
-		.button-container {
-			grid-template-columns: repeat(2, 1fr);
-			padding: 0;
+		.row {
+			justify-content: space-around;
 		}
 		a {
 			height: 40vw;
+			width: 40vw;
+			margin: 0;
 		}
 	}
 </style>
