@@ -9,7 +9,7 @@
 </script>
 
 <p class="contact-us-message">
-	If you have a questions you don't see here, feel free to <a href="/contact-us">contact us</a> and we'll
+	If you have questions you don't see here, feel free to <a href="/contact-us">contact us</a> and we'll
 	get you an answer!
 </p>
 
