@@ -90,7 +90,6 @@
 
 			$updateTracker.templateUpdated = true;
 		}
-		saveToFirebase();
 	}
 
 	async function saveToFirebase() {
@@ -132,35 +131,38 @@
 	}
 </script>
 
-<h2>CUSTOM ORDER FORM</h2>
-<div class="separation-bar" />
-{#if storeLoading}
-	<div class="loading-container">
-		<div class="loading-spinner" />
-	</div>
-{:else}
-	<div class="sortable-container" bind:this={sortableContainer}>
-		{#each $customOrderTemplateStore.fields as field}
-			<Field fieldObject={field} {updateTracker} on:delete={updateTemplateIndexes} />
-		{/each}
-	</div>
-{/if}
-<AddField
-	on:fieldAdded={() => {
-		$updateTracker.templateUpdated = true;
-	}}
-/>
-<button class="save-update" on:click={saveToFirebase} class:emphasize={emphasizeSave}>
-	<p>
-		{#if saving}
-			<div class="button-spinner" />
-		{:else}
-			SAVE & UPDATE
-		{/if}
-	</p>
-</button>
+<div class="form-wrapper">
+	<h2>CUSTOM ORDER FORM</h2>
+	<div class="separation-bar" />
+	{#if storeLoading}
+		<div class="loading-container">
+			<div class="loading-spinner" />
+		</div>
+	{:else}
+		<div class="sortable-container" bind:this={sortableContainer}>
+			{#each $customOrderTemplateStore.fields as field}
+				<Field fieldObject={field} {updateTracker} on:delete={updateTemplateIndexes} />
+			{/each}
+		</div>
+	{/if}
+	<AddField on:fieldAdded={updateTemplateIndexes} />
+	<button class="save-update" on:click={saveToFirebase} class:emphasize={emphasizeSave}>
+		<p>
+			{#if saving}
+				<div class="button-spinner" />
+			{:else}
+				SAVE & UPDATE
+			{/if}
+		</p>
+	</button>
+</div>
 
 <style>
+	.form-wrapper {
+		width: 90vw;
+		max-width: 700px;
+		margin: 0 auto;
+	}
 	h2 {
 		text-align: center;
 		font-family: lato-light;
