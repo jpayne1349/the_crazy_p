@@ -97,8 +97,9 @@
 				});
 				generatingLink = false;
 			}
-			generatingLink = false;
+
 			await goto(response.paymentLink.url);
+			generatingLink = false;
 		} catch (err) {
 			console.log(err);
 			// handle error

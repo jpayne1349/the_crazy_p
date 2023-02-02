@@ -21,7 +21,7 @@
 		font-family: lato-light;
 		font-size: 20px;
 		text-align: center;
-		margin-top: 50px;
+		margin-top: 15px;
 	}
 	a {
 		color: hsl(var(--p));
@@ -31,10 +31,10 @@
 	.image-container {
 		display: flex;
 		justify-content: center;
-		margin-top: 50px;
+		margin-top: 15px;
 	}
 	img {
-		max-width: 300px;
+		max-width: 250px;
 		border-radius: 15px;
 		box-shadow: 0px 1px 4px grey;
 	}

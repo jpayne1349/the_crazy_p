@@ -118,11 +118,8 @@
 
 <style>
 	.button-container {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 25px;
-		margin-top: 25px;
-		padding: 0 50px;
+		display: flex;
+		justify-content: center;
 	}
 	a {
 		font-family: lato-regular;
@@ -132,8 +129,9 @@
 		justify-content: space-evenly;
 		align-items: center;
 		text-align: center;
-		height: 33vh;
-		padding: 40px 0;
+		height: 225px;
+		width: 250px;
+		margin-left: 25px;
 		border: solid 1px hsl(var(--n));
 		border-radius: 2px;
 		transition: all 0.2s;
@@ -144,14 +142,16 @@
 
 	.input-container {
 		display: flex;
-		width: 100%;
+		width: 300px;
+		margin: 0 auto;
 		border: 1px solid hsl(var(--n));
 		border-radius: 2px;
 	}
 	input.leadtime {
 		background-color: hsl(var(--bg));
 		font-size: 18px;
-		flex-grow: 2;
+		flex-grow: 1;
+		flex-basis: 150px;
 		height: 45px;
 		padding-left: 10px;
 		outline: none;
@@ -219,11 +219,13 @@
 	}
 	@media screen and (max-width: 800px) {
 		.button-container {
-			grid-template-columns: repeat(2, 1fr);
-			padding: 0;
+			display: flex;
+			justify-content: space-around;
 		}
 		a {
 			height: 40vw;
+			width: 40vw;
+			margin: 0;
 		}
 	}
 	@keyframes spinning {

@@ -8,15 +8,15 @@
 
 	let dispatch = createEventDispatcher();
 
-	let fieldObject: CustomOrderField = {
-		name: '',
-		index: 0,
-		options: []
-	};
-
 	function saveNewField() {
+		let fieldObject: CustomOrderField = {
+			name: '',
+			index: 0,
+			options: []
+		};
+
 		let inputs = fieldWrapper.getElementsByTagName('input');
-		console.log(inputs);
+
 		let newOptions: { name: string; selected: boolean }[] = [];
 		for (let input of inputs) {
 			if (input.classList.contains('field-name')) {
@@ -48,7 +48,7 @@
 		customOrderTemplateStore.update((data) => {
 			data.fields.push(fieldObject);
 
-			console.log('new template data = ', data);
+			//console.log('new template data = ', data);
 			return data;
 		});
 

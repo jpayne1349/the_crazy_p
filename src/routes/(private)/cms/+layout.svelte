@@ -154,7 +154,7 @@
 	}
 	.cms-title {
 		margin: 85px auto 25px;
-		max-width: 900px;
+		max-width: 800px;
 	}
 	.cms-title a {
 		font-family: lato-regular;
@@ -166,7 +166,7 @@
 	section {
 		min-height: 75vh;
 		margin: 0 auto 50px;
-		max-width: 900px;
+		max-width: 800px;
 	}
 	.loading-container {
 		min-height: 500px;
