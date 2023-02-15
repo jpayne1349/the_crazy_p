@@ -5,6 +5,7 @@
 	import { ref, listAll, getDownloadURL } from 'firebase/storage';
 	import type { FirebaseStorage } from 'firebase/storage';
 	import type { CrazyCarouselItem } from '../routes/customTypes';
+	import { fly } from 'svelte/transition';
 
 	// always required list of image sources
 	export let autoPlay = 4000;
@@ -32,9 +33,12 @@
 	$: activeDot = 0;
 	let showCarousel = false;
 	let sourceListPopulated = false;
-	// get's filled with the urls for the firebase storage
-	let photoObjects: CrazyCarouselItem[] = [];
 	let windowWidth: number;
+	let imagesLoaded: number = 0;
+	let controllerCreated: boolean = false;
+	let dotsArray: number[] = [];
+	let totalPhotoCount: number;
+	let loadingDotActive: boolean = true;
 
 	onMount(() => {
 		firebaseStore.subscribe((storeData) => {
@@ -42,6 +46,7 @@
 				if (windowWidth > 800) {
 					elementsPerPage = 3;
 				}
+				console.log('storeData active', new Date());
 				getSourceListV2(storeData.storage);
 			}
 		});
@@ -49,6 +54,7 @@
 
 	// used in conjunction with the carouselStore to index the photos in a certain order.. specific to this use case
 	async function getSourceListV2(storageRef: FirebaseStorage) {
+		//console.log('getting source list v2', $carouselStore);
 		if (!$carouselStore) {
 			setTimeout(getSourceListV2, 200);
 			return;
@@ -57,15 +63,26 @@
 		let sortedArray = $carouselStore.photos.sort((a, b) => {
 			return a.index - b.index;
 		});
+		totalPhotoCount = $carouselStore.photos.length;
+
+		let loopPass = 0;
+		// ****** Below is slow.. takes 3-6 seconds
 		for (let photoObject of sortedArray) {
+			loopPass += 1;
 			let fileRef = ref($firebaseStore.storage, storagePath + '/' + photoObject.filename);
 			let photoUrl = await getDownloadURL(fileRef);
 			photoObject.generatedUrl = photoUrl;
+			if (photoObject.inventoryName) {
+				let newElem = createCarouselImageElement(photoUrl, {
+					isLink: true,
+					inventoryName: photoObject.inventoryName
+				});
+			} else {
+				let newElem = createCarouselImageElement(photoUrl);
+			}
 		}
-		photoObjects = sortedArray;
-
+		console.log('urls retrieved', new Date());
 		sourceListPopulated = true;
-		createController();
 	}
 
 	// should work for all use cases, just does not account for indexing photos differently
@@ -89,12 +106,6 @@
 	}
 
 	function createController() {
-		// this is here to prevent jumping the gun on the controller creation, the element needs to be filled with img's first.
-		if (carouselElement.children.length < photoObjects.length) {
-			setTimeout(createController, 200);
-			return;
-		}
-
 		carouselController = new Siema({
 			selector: carouselElement,
 			duration: transitionDuration,
@@ -106,7 +117,10 @@
 			threshold: dragDistanceRequired,
 			loop: loop,
 			rtl: rightToLeft,
-			onInit: () => {},
+			onInit: () => {
+				controllerCreated = true;
+				showCarousel = true;
+			},
 			onChange: () => {
 				if (showPositionDots) {
 					updatePositionDots();
@@ -118,10 +132,11 @@
 	}
 
 	function startCarousel() {
+		console.log('carousel starting', new Date());
 		pausedAutoPlay = false;
 		// may have to wait until image.onload is called?
 
-		setTimeout(() => (showCarousel = true), 500);
+		// showCarousel = true;
 
 		// start the autoPlay type movement
 		autoPlayHandler = setInterval(() => {
@@ -152,50 +167,79 @@
 
 	function updatePositionDots() {
 		activeDot = carouselController.currentSlide;
-		activeDot = activeDot < 0 ? activeDot + 4 : activeDot;
 	}
-	//class:active={activeDot == index && photoObj.inventoryName != ''}
 
 	function linkClicked() {
 		console.log('linkClicked');
+	}
+
+	function createCarouselImageElement(
+		src: string,
+		options?: { isLink: boolean; inventoryName: string }
+	) {
+		let imageElement = document.createElement('img');
+		imageElement.src = src;
+		imageElement.className = 'carousel-item';
+		imageElement.alt = 'Custom Hat';
+		imageElement.addEventListener('ontouchstart', pauseCarousel);
+		imageElement.addEventListener('mousedown', pauseCarousel);
+
+		if (options?.isLink) {
+			let availableNowDiv = document.createElement('div');
+			availableNowDiv.className = 'carousel-link-banner';
+			availableNowDiv.innerText = 'Available Now';
+
+			let linkWrapper = document.createElement('a');
+			linkWrapper.className = 'carousel-link-container';
+			linkWrapper.href = '/inventory/' + options.inventoryName;
+
+			linkWrapper.appendChild(availableNowDiv);
+			linkWrapper.appendChild(imageElement);
+
+			imageElement.onload = (ev) => {
+				imageLoadedListener(ev, linkWrapper);
+			};
+			return;
+		}
+
+		imageElement.onload = (ev) => {
+			imageLoadedListener(ev, imageElement);
+		};
+	}
+
+	function imageLoadedListener(event: any, elem: HTMLImageElement | HTMLAnchorElement) {
+		dotsArray = [...dotsArray, imagesLoaded]; // starts at zero, has to come before increment
+		imagesLoaded += 1;
+		if (controllerCreated) {
+			carouselController.append(elem);
+		} else {
+			carouselElement.appendChild(elem);
+		}
+		if (imagesLoaded == elementsPerPage) {
+			createController();
+		}
+		if (imagesLoaded == totalPhotoCount) {
+			loadingDotActive = false;
+		}
 	}
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
 
 <section>
-	<div class="loading-placeholder" class:active={!showCarousel} />
-	<div bind:this={carouselElement} class="carousel-container" class:active={showCarousel}>
-		{#if sourceListPopulated}
-			{#each photoObjects as photoObj}
-				{#if photoObj.inventoryName != ''}
-					<a class="link-container" href="/inventory/{photoObj.inventoryName}">
-						<div class="product-direct-link active">Available Now</div>
-						<img
-							class="carousel-item"
-							src={photoObj.generatedUrl}
-							alt="Custom Hand Burned Hat"
-							on:touchstart={pauseCarousel}
-							on:mousedown={pauseCarousel}
-						/>
-					</a>{:else}
-					<img
-						class="carousel-item"
-						src={photoObj.generatedUrl}
-						alt="Custom Hand Burned Hat"
-						on:touchstart={pauseCarousel}
-						on:mousedown={pauseCarousel}
-					/>
-				{/if}
-			{/each}
-		{/if}
+	<div class="loading-placeholder" class:active={!showCarousel}>
+		<div />
+		<div />
+		<div />
 	</div>
+	<div bind:this={carouselElement} class="carousel-container" class:active={showCarousel} />
 
 	{#if showPositionDots}
-		<ul class="carousel-dot-container" class:active={showCarousel}>
-			{#each photoObjects as photo, index}
-				<li id={index.toString()} class:active={activeDot == index} />
+		<ul class="carousel-dot-container" class:active={true}>
+			{#each dotsArray as dot}
+				<li id={dot.toString()} class:active={activeDot == dot} in:fly={{ x: 15 }} />
 			{/each}
+			<li class="dot-loader" class:show={loadingDotActive} />
 		</ul>
 	{/if}
 </section>
@@ -220,31 +264,33 @@
 	.carousel-container.active {
 		opacity: 1;
 	}
-	.carousel-item {
+	:global(.carousel-item) {
 		width: 20vw;
 		margin: 0 2.5vw;
 	}
-	.loading-placeholder.active {
-		animation-duration: 3.2s;
+	.loading-placeholder.active div {
+		content: '';
+		animation-duration: 3s;
 		animation-fill-mode: forwards;
 		animation-iteration-count: infinite;
 		animation-name: shimmer;
 		animation-timing-function: linear;
 		background: hsl(var(--b3));
-		background: linear-gradient(to right, #f6f6f6 8%, #eaeaea 18%, #f6f6f6 33%);
+		background: linear-gradient(to right, #eaeaea 8%, #f6f6f6 18%, #eaeaea 33%) fixed;
 		background-size: 1200px 100%;
-		width: 70vw;
+		width: 20vw;
 		height: 20vw;
-		position: absolute;
+		margin: 0 2.5vw;
 		display: block;
+		border-radius: 2px;
 	}
 	.loading-placeholder {
-		display: none;
+		display: flex;
 	}
-	.link-container {
+	:global(.carousel-link-container) {
 		position: relative;
 	}
-	.product-direct-link.active {
+	:global(.carousel-link-banner) {
 		display: block;
 		position: absolute;
 		left: 32px;
@@ -281,10 +327,30 @@
 		width: 8px;
 		transition: all 0.2s ease;
 	}
+	li.dot-loader.show {
+		animation-name: spin;
+		animation-duration: 0.8s;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+		border: none;
+		border-right: transparent;
+		border-top: 1px solid hsl(var(--b3));
+		display: block;
+	}
+	li.dot-loader {
+		display: none;
+	}
 	.carousel-dot-container li.active {
 		background-color: hsl(var(--b3));
 	}
-
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
 	@keyframes shimmer {
 		0% {
 			background-position: -1200px 0;
@@ -303,7 +369,7 @@
 			height: 91vw;
 			padding-left: 5vw;
 		}
-		.carousel-item {
+		:global(.carousel-item) {
 			width: 90vw;
 			height: 90vw;
 			margin: 0;
@@ -311,12 +377,27 @@
 		.loading-placeholder.active {
 			width: 90vw;
 			height: 90vw;
+			content: '';
+			animation-duration: 3s;
+			animation-fill-mode: forwards;
+			animation-iteration-count: infinite;
+			animation-name: shimmer;
+			animation-timing-function: linear;
+			background: hsl(var(--b3));
+			background: linear-gradient(to right, #eaeaea 8%, #f6f6f6 18%, #eaeaea 33%) fixed;
+			background-size: 1200px 100%;
+			margin: 0 2.5vw;
+			display: block;
+			border-radius: 2px;
 		}
-		.product-direct-link.active {
+		.loading-placeholder.active div {
+			display: none;
+		}
+		:global(.carousel-link-banner) {
 			display: block;
 			position: absolute;
 			left: 4px;
-			top: 4px;
+			top: 20px;
 			border: 1px solid hsl(var(--a));
 			padding: 0px 20px;
 			font-family: lato-bold;

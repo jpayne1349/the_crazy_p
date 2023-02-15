@@ -89,7 +89,7 @@
 		animation-name: shimmer;
 		animation-timing-function: linear;
 		background: hsl(var(--b3));
-		background: linear-gradient(to right, #f6f6f6 8%, #f0f0f0 18%, #f6f6f6 33%) fixed;
+		background: linear-gradient(to right, #eaeaea 8%, #f6f6f6 18%, #eaeaea 33%) fixed;
 		background-size: 1200px 100%;
 		width: 100%;
 		padding-bottom: 100%;

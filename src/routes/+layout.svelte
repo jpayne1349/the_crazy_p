@@ -53,6 +53,7 @@
 		const contentManagementSnapshot = await getDocs(
 			collection($firebaseStore.db, 'content-management')
 		);
+
 		let productList: CrazyProduct[] = [];
 		contentManagementSnapshot.forEach((doc) => {
 			if (doc.id == 'carousel') {
