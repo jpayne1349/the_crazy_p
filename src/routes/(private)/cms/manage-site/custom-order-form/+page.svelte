@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Field from './Field.svelte';
 	import { customOrderTemplateStore, firebaseStore, alertStore } from '../../../../customStores';
+	import type { CrazyCustomOrderTemplate } from '../../../../customTypes';
 	import { onMount } from 'svelte';
 	import Sortable from 'sortablejs';
-	import type { SortableEvent } from 'sortablejs';
 	import { writable } from 'svelte/store';
-	import { doc, setDoc } from 'firebase/firestore';
+	import { doc, setDoc, getDocs, collection } from 'firebase/firestore';
 	import { beforeNavigate } from '$app/navigation';
 	import AddField from './AddField.svelte';
 
@@ -37,7 +37,11 @@
 
 	// one-time popup if trying to leave before saving.
 	beforeNavigate((navigation) => {
-		if (forceNavigate) return;
+		if (forceNavigate) {
+			// reset form template to original, and return.. ie allow navigate away
+			reloadOriginalTemplate();
+			return;
+		}
 
 		if ($updateTracker.templateUpdated == true && $updateTracker.firebaseUpdated == false) {
 			navigation.cancel();
@@ -128,6 +132,19 @@
 			});
 			saving = false;
 		}
+	}
+
+	async function reloadOriginalTemplate() {
+		const contentManagementSnapshot = await getDocs(
+			collection($firebaseStore.db, 'content-management')
+		);
+		contentManagementSnapshot.forEach((doc) => {
+			if (doc.id == 'custom-order') {
+				let customOrderTemplate = doc.data() as CrazyCustomOrderTemplate;
+				customOrderTemplate.fields.sort((a, b) => a.index - b.index);
+				customOrderTemplateStore.set(customOrderTemplate);
+			}
+		});
 	}
 </script>
 
