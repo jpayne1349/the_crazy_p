@@ -66,6 +66,7 @@
 	}
 </script>
 
+<!-- TODO: The add product is not working because of a keyed each error.. -->
 <div class="add-container">
 	<button class="add-product" on:click={addProduct}>
 		{#if addingProduct}
@@ -113,7 +114,7 @@
 				<div class="loading-spinner" />
 			</div>
 		{:else}
-			{#each $inventoryStore as product (product.id)}
+			{#each $inventoryStore as product}
 				<InventoryTableItem {product} {viewSold} />
 			{/each}
 		{/if}
