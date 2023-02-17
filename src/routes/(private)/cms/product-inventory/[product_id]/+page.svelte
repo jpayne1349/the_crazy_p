@@ -380,7 +380,9 @@
 			<label for="price">PRICE</label>
 			<input class="text-input" type="text" id="price" name="price" value={data.price} />
 
-			<label for="description">DESCRIPTION</label>
+			<label for="description"
+				>DESCRIPTION: Please use a "- " (dash + space) to signify a bullet point.</label
+			>
 			<textarea class="text-input" id="description" name="description" value={data.description} />
 
 			<div class="status-row">

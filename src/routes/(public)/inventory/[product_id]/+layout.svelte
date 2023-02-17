@@ -112,6 +112,27 @@
 		}
 		generatingLink = false;
 	}
+	// TODO: maybe this should pull each line out and convert it to a li element? maybe be nicer..
+	function formatDescriptionBullets(text: string) {
+		let wholeLineMatcher = /(?:[-]\s.+$)/gmu;
+		let dashMatcher = /(?:[-]\s)/gmu;
+
+		// pull out all regex groups
+		let matches = text.match(wholeLineMatcher);
+		text = text.replace(wholeLineMatcher, '');
+		console.log(matches);
+		// wrap each in a li tag
+		let bulletPoints = matches?.map((point) => {
+			// remove point from original text
+			point = point.replace(dashMatcher, '');
+			point = '<li class="bullet-point">' + point + '</li>';
+			return point;
+		});
+		if (bulletPoints) {
+			text = text.concat(...bulletPoints);
+		}
+		return text;
+	}
 </script>
 
 <slot />
@@ -162,7 +183,7 @@
 			<div class="description-container">
 				<h4 class="description-title">DESCRIPTION</h4>
 
-				<p class="description-content">{data.description}</p>
+				<p class="description-content">{@html formatDescriptionBullets(data.description)}</p>
 			</div>
 			{#if data.status}
 				<button class="buy-now" on:click={goToPayment}>
@@ -283,7 +304,13 @@
 		font-family: lato-light;
 		font-size: 16px;
 		margin: 15px 0;
-		white-space: pre-wrap;
+		/* white-space: pre-wrap; */
+	}
+	:global(.bullet-point) {
+		font-family: lato-light;
+		text-indent: -16px;
+		padding-left: 16px;
+		margin-left: 16px;
 	}
 	button.buy-now {
 		display: flex;
@@ -415,6 +442,9 @@
 		}
 		.desktop-data-col {
 			padding: 0;
+		}
+		:global(.bullet-point) {
+			margin-left: 0px;
 		}
 	}
 </style>
