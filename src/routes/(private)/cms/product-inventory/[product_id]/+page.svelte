@@ -374,13 +374,13 @@
 
 	{#if dataLoaded}
 		<form bind:this={dataFormElem} class="data" on:submit|preventDefault={saveAndUpdate}>
-			<label for="name">NAME</label>
+			<label for="name">NAME: Symbols such as ?=/ etc. should not be used.</label>
 			<input class="text-input" type="text" id="name" name="name" value={data.name} />
 
-			<label for="price">PRICE</label>
+			<label for="price">PRICE: Whole numbers without decimal places.</label>
 			<input class="text-input" type="text" id="price" name="price" value={data.price} />
 
-			<label for="description">DESCRIPTION</label>
+			<label for="description">DESCRIPTION: "- " (dash + space) to signify a bullet point.</label>
 			<textarea class="text-input" id="description" name="description" value={data.description} />
 
 			<div class="status-row">

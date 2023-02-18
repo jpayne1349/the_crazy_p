@@ -40,8 +40,6 @@
 	});
 </script>
 
-<!-- TODO: add the type classes for colors, as well as the icons that are dependent upon the type.. -->
-
 {#if alertActive}
 	<div class="wrapper" transition:fly={{ y: 50 }}>
 		<div class="alert-container {activeAlert.type}">

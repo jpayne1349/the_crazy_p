@@ -35,8 +35,6 @@ export async function connectToFirebase() {
 	const authModule = await import('firebase/auth');
 	const analyticsModule = await import('firebase/analytics');
 
-	// TODO: firestore, storage, etc need to be added
-
 	// ** PUBLIC VARIABLES **
 
 	// Initialize Firebase

@@ -113,7 +113,7 @@
 				<div class="loading-spinner" />
 			</div>
 		{:else}
-			{#each $inventoryStore as product (product.id)}
+			{#each $inventoryStore as product}
 				<InventoryTableItem {product} {viewSold} />
 			{/each}
 		{/if}

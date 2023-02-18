@@ -181,7 +181,7 @@
 		imageElement.src = src;
 		imageElement.className = 'carousel-item';
 		imageElement.alt = 'Custom Hat';
-		imageElement.addEventListener('ontouchstart', pauseCarousel);
+		imageElement.addEventListener('touchstart', pauseCarousel);
 		imageElement.addEventListener('mousedown', pauseCarousel);
 
 		if (options?.isLink) {
@@ -293,8 +293,8 @@
 	:global(.carousel-link-banner) {
 		display: block;
 		position: absolute;
-		left: 32px;
-		top: 21px;
+		left: 35px;
+		top: 20px;
 		border: 1px solid hsl(var(--a));
 		padding: 0px 20px;
 		font-family: lato-bold;
@@ -397,7 +397,7 @@
 			display: block;
 			position: absolute;
 			left: 4px;
-			top: 20px;
+			top: 4px;
 			border: 1px solid hsl(var(--a));
 			padding: 0px 20px;
 			font-family: lato-bold;
