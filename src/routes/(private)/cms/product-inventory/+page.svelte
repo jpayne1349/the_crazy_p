@@ -66,7 +66,6 @@
 	}
 </script>
 
-<!-- TODO: The add product is not working because of a keyed each error.. -->
 <div class="add-container">
 	<button class="add-product" on:click={addProduct}>
 		{#if addingProduct}

@@ -112,7 +112,7 @@
 		}
 		generatingLink = false;
 	}
-	// TODO: maybe this should pull each line out and convert it to a li element? maybe be nicer..
+
 	function formatDescriptionBullets(text: string) {
 		let wholeLineMatcher = /(?:[-]\s.+$)/gmu;
 		let dashMatcher = /(?:[-]\s)/gmu;

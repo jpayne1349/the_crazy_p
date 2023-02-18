@@ -64,8 +64,6 @@
 
 			return;
 		}
-
-		// TODO: clear form or redirect
 	}
 </script>
 
