@@ -43,7 +43,7 @@
 	}
 
 	async function getPhotoUrls(loadedProduct: CrazyProduct) {
-		console.log('running get photo urls');
+		//console.log('running get photo urls');
 		photoSrcList = [];
 		photoSrcListPopulated = false;
 		for (let photoObject of loadedProduct.photos) {

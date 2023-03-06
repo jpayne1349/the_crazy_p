@@ -139,18 +139,20 @@
 					class:selected={option.selected}>{option.name}</button
 				>
 			{/each}
-			<button
-				type="button"
-				class="option other"
-				on:click={(event) => {
-					let button = event.target;
-					//@ts-ignore
-					button.classList.toggle('selected');
-					if (!field.hasDetails) {
-						field.hasDetails = true;
-					}
-				}}>Other</button
-			>
+			{#if field.name != 'DESIGN'}
+				<button
+					type="button"
+					class="option other"
+					on:click={(event) => {
+						let button = event.target;
+						//@ts-ignore
+						button.classList.toggle('selected');
+						if (!field.hasDetails) {
+							field.hasDetails = true;
+						}
+					}}>Other</button
+				>
+			{/if}
 		</div>
 
 		{#if field.hasDetails}

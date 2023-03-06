@@ -46,7 +46,7 @@
 				if (windowWidth > 800) {
 					elementsPerPage = 3;
 				}
-				console.log('storeData active', new Date());
+				//console.log('storeData active', new Date());
 				getSourceListV2(storeData.storage);
 			}
 		});
@@ -81,7 +81,7 @@
 				let newElem = createCarouselImageElement(photoUrl);
 			}
 		}
-		console.log('urls retrieved', new Date());
+		//console.log('urls retrieved', new Date());
 		sourceListPopulated = true;
 	}
 
@@ -132,7 +132,7 @@
 	}
 
 	function startCarousel() {
-		console.log('carousel starting', new Date());
+		//console.log('carousel starting', new Date());
 		pausedAutoPlay = false;
 		// may have to wait until image.onload is called?
 
@@ -174,7 +174,7 @@
 	}
 
 	function linkClicked() {
-		console.log('linkClicked');
+		//console.log('linkClicked');
 	}
 
 	function createCarouselImageElement(
