@@ -166,7 +166,11 @@
 	}
 
 	function updatePositionDots() {
-		activeDot = carouselController.currentSlide;
+		if (carouselController.currentSlide < 0) {
+			activeDot = totalPhotoCount + carouselController.currentSlide;
+		} else {
+			activeDot = carouselController.currentSlide;
+		}
 	}
 
 	function linkClicked() {

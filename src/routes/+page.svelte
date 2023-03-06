@@ -3,7 +3,7 @@
 	import { fly } from 'svelte/transition';
 	import smallBackgroundPhoto from '$lib/assets/smallBg.jpg';
 	import bigBackgroundPhoto from '$lib/assets/bigBg.jpg';
-	import bigBackgroundPhoto2 from '$lib/assets/bigHomeBg2.jpeg';
+	import bigBackgroundPhoto2 from '$lib/assets/bigHomebg3.jpg';
 	import Carousel from '../lib/Carousel.svelte';
 	import { alertStore } from './customStores';
 
