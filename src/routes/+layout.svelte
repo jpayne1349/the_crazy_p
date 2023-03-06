@@ -105,9 +105,9 @@
 		<a class="footer-link" href="/faq">FAQ</a>
 	</div>
 	<div class="footer-row">
-		<a class="footer-link" href="/terms-of-service">TERMS OF SERVICE</a>
+		<!-- <a class="footer-link" href="/terms-of-service">TERMS OF SERVICE</a> -->
 		<a class="footer-link" href="/cms">CMS</a>
-		<a class="footer-link" href="/privacy-policy">PRIVACY POLICY</a>
+		<!-- <a class="footer-link" href="/privacy-policy">PRIVACY POLICY</a> -->
 	</div>
 </footer>
 

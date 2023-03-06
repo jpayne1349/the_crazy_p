@@ -60,7 +60,7 @@
 					data.fields[n] = fieldObject;
 				}
 			}
-			console.log('new template data = ', data);
+			//console.log('new template data = ', data);
 			return data;
 		});
 
@@ -81,7 +81,7 @@
 			if ($customOrderTemplateStore.fields[n].name == fieldObject.name) {
 				customOrderTemplateStore.update((data) => {
 					data.fields.splice(n, 1);
-					console.log('updated store', data);
+					//console.log('updated store', data);
 					return data;
 				});
 				deleteRequested = false;

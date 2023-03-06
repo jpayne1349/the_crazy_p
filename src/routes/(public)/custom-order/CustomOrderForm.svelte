@@ -139,22 +139,38 @@
 					class:selected={option.selected}>{option.name}</button
 				>
 			{/each}
-			<button
-				type="button"
-				class="option other"
-				on:click={(event) => {
-					let button = event.target;
-					//@ts-ignore
-					button.classList.toggle('selected');
-					if (!field.hasDetails) {
-						field.hasDetails = true;
-					}
-				}}>Other</button
-			>
+			{#if field.name != 'DESIGN'}
+				<button
+					type="button"
+					class="option other"
+					on:click={(event) => {
+						let button = event.target;
+						//@ts-ignore
+						button.classList.toggle('selected');
+						if (!field.hasDetails) {
+							field.hasDetails = true;
+						}
+					}}>Other</button
+				>
+			{/if}
 		</div>
 
 		{#if field.hasDetails}
-			<textarea class="field-details" placeholder="Details" bind:value={field.details} />
+			{#if field.name == 'SIZE'}
+				<textarea
+					class="field-details"
+					placeholder="Know your hat size number?"
+					bind:value={field.details}
+				/>
+			{:else if field.name == 'DESIGN'}
+				<textarea
+					class="field-details"
+					placeholder="Tell me your ideas!"
+					bind:value={field.details}
+				/>
+			{:else}
+				<textarea class="field-details" placeholder="Details" bind:value={field.details} />
+			{/if}
 		{/if}
 
 		<div class="separation-bar field" />
