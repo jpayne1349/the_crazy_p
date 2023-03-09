@@ -15,11 +15,12 @@
 </script>
 
 <section>
-	<picture>
+	<div class="background-photo" />
+	<!-- <picture>
 		<source srcset={smallBackgroundPhoto} media="(max-width: 800px)" />
-		<source srcset={bigBackgroundPhoto2} />
+		<source class="big-bg" srcset={bigBackgroundPhoto2} />
 		<img class="bg-img" src={smallBackgroundPhoto} alt="background-hat" />
-	</picture>
+	</picture> -->
 
 	{#if textShowing}
 		<div class="cta-container">
@@ -54,7 +55,15 @@
 		/* filter: brightness(0.6); */
 		pointer-events: none;
 	}
-
+	.background-photo {
+		width: 100%;
+		height: 500px;
+		background-position: bottom;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-color: hsl(var(--n));
+		background-image: url('/src/lib/assets/bigHomebg3.jpg');
+	}
 	.cta-container {
 		position: absolute;
 		bottom: 0px;
@@ -93,6 +102,15 @@
 		}
 		h2 {
 			font-size: 28px;
+		}
+		.background-photo {
+			width: 100%;
+			height: 500px;
+			background-position: top;
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-color: hsl(var(--n));
+			background-image: url('/src/lib/assets/smallBg.jpg');
 		}
 	}
 	@media screen and (max-width: 1400px) and (min-width: 800px) {
