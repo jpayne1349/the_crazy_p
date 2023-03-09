@@ -19,7 +19,7 @@
 		font-size: 18px;
 	}
 	.background-photo {
-		width: 857px;
+		width: 100%;
 		height: 490px;
 		background-position: center;
 		background-size: cover;
