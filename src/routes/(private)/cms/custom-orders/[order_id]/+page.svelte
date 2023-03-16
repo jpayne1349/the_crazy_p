@@ -143,7 +143,7 @@
 					{#if field.details}
 						{field.details}
 					{:else}
-						--OTHER OPTION TOGGLED ONLY--
+						* OTHER Selected * No details were added
 					{/if}
 				</div>
 			{/if}
@@ -212,7 +212,7 @@
 		margin-top: 15px;
 		font-size: 18px;
 		width: 96%;
-		height: 90px;
+		min-height: 90px;
 		border: 1px solid lightgray;
 		margin-left: 2%;
 		padding: 2px 5px;
