@@ -19,6 +19,17 @@
 		productList = $inventoryStore;
 	}
 
+	function anyAvailable() {
+		let returnBool = false;
+
+		productList.forEach((product) => {
+			if (product.status) {
+				returnBool = true;
+			}
+		});
+		return returnBool;
+	}
+
 	inventoryStore.subscribe(setProductList);
 </script>
 
@@ -26,6 +37,11 @@
 	{#each productList as product}
 		<Product productObject={product} {viewSold} />
 	{/each}
+	{#if anyAvailable() == false}
+		<div class="product-coming-soon">
+			<p>Coming Soon!</p>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -39,6 +55,21 @@
 		grid-template-columns: repeat(2, 1fr);
 		gap: 30px;
 	}
+	.product-coming-soon {
+		position: relative;
+		width: 218px;
+		height: 218px;
+		background-color: hsl(var(--b1));
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid hsl(var(--b2));
+	}
+	p {
+		font-size: 18px;
+		font-family: lato-bold;
+		color: hsl(var(--a));
+	}
 
 	@media screen and (max-width: 800px) {
 		.products {
@@ -48,6 +79,10 @@
 		.products.single-col {
 			grid-template-columns: 100%;
 			gap: 30px;
+		}
+		.product-coming-soon {
+			width: 187px;
+			height: 187px;
 		}
 	}
 </style>
